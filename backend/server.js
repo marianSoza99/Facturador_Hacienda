@@ -7,9 +7,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json());
 
 const billRouter = require('./routes/BillRouter');
+
 app.use('/bill', billRouter);
 
 app.listen(port, () => {
