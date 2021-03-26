@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const adapter = require('../Adapter');
+const adapter = require('../Model/Adapter');
 
 router.route('/').get((req, res) => {
     var sessionKey;

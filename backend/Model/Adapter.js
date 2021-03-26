@@ -21,7 +21,6 @@
 
 var FormData = require('form-data');
 var localStorage = require('local-storage');
-var XMLHttpRequest = require ('xmlhttprequest').XMLHttpRequest;
 var fetch = require("node-fetch");
 
 // Users
@@ -190,7 +189,33 @@ function API_recoverPwd(userName, success, error){
 /* */
 
 function API_getRequest(req, success, error, timeout = 800, times = 0){
+    var data = new FormData();
+    for (var key in req) {
+        var value = req[key];
+        data.append(key, value);
+    } 
     
+    var status = 0;
+
+    fetch(API_url,
+    {
+        method: "POST",
+        body: data
+    })
+    .then(function(res){ 
+        if(res.status == 200){
+            status = 1;
+        }
+        return res.json();
+    })
+    .then(function(data){ 
+        if (status){
+            success(data) 
+        }
+        else{
+            error(data)
+        }
+    })
 }
 
 
