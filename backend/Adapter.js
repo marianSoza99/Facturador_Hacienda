@@ -130,32 +130,31 @@ function API_checkLogin(success, error, timeout){
 /* Req userData, func success, func error    */
 /*********************************************/
 var APILogin = function API_login(userData, success, error){
- var req = {
-            w: "users",
-            r: "users_log_me_in",
-            userName: userData.userName,
-            pwd: userData.pwd
-        };
-        
- API_postRequest(req, 
-    function(data){
-        if(data.resp != ERROR_USER_WRONG_LOGIN_INFO){
-            //API_setLocalStorage('userName', data.resp.userName);   
-            //API_setLocalStorage('sessionKey', data.resp.sessionKey); 
-            if(success != null){
-                success(data);
+    var req = {
+        w: "users",
+        r: "users_log_me_in",
+        userName: userData.userName,
+        pwd: userData.pwd
+    };
+            
+    API_postRequest(req, 
+        function(data){
+            if(data.resp != ERROR_USER_WRONG_LOGIN_INFO){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
             }
-        }else{
+        },
+        function(data){
             if(error != null){
                 error(data);
             }
         }
-    },
-    function(data){
-        if(error != null){
-            error(data);
-        }
-    });
+    );
 }
 
 /*********************************************/
@@ -191,51 +190,7 @@ function API_recoverPwd(userName, success, error){
 /* */
 
 function API_getRequest(req, success, error, timeout = 800, times = 0){
-    API_debug("Making a get request to " + API_url);
-    /*generate the form*/
-    var _data = new FormData();
     
-    for (var key in req) {
-        var value = req[key];
-        API_debug("Adding " + key + " -> " + value);
-        _data.append(key, value);
-    }   
-
-    _data.append("iam", API_getLocalStorage('userName'));
-    _data.append("sessionKey", API_getLocalStorage('sessionKey'));
-
-    var oReq = new XMLHttpRequest();
-    oReq.open("GET", API_url, true);
-    
-    oReq.timeout = timeout;
-    
-    oReq.onload = function(oEvent) {
-        if(oReq.status == 200) {
-            var r = oReq.responseText;
-            r = JSON.parse(r);
-            API_debug("Done!");
-            success(r);
-        }else{
-            var r = oReq.responseText;
-            API_debug("There was an error");
-            error(r);
-        }
-    };
-    
-    oReq.ontimeout = function(e){
-        times++;
-        if(times < 3){
-            API_postRequest(req, success, error, timeout, (times++));
-            API_debug("Timeout " + times + ", lets try again");
-        }else{
-            API_doSomethingAfter(function(){
-                API_debug("Timeout does not work, retrying in a sec");
-                API_postRequest(req, success, error, timeout, 0);
-                API_debug("Function called...");
-            }, 3000);
-        }
-    }
-    oReq.send(_data);
 }
 
 
