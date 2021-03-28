@@ -20,7 +20,6 @@
 /*******************************/
 
 var FormData = require('form-data');
-var localStorage = require('local-storage');
 var fetch = require("node-fetch");
 
 // Users
