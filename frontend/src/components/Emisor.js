@@ -11,7 +11,7 @@ export default function EmisorForm() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Datos del receptor
+        Datos del emisor
       </Typography>
       <Grid container spacing={3}>
       <Grid item xs={12} sm={6}>
@@ -44,6 +44,12 @@ export default function EmisorForm() {
             fullWidth
             autoComplete="correo"
           />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField required id="phone_receptor" label="Teléfono" fullWidth autoComplete="Teléfono" />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField required id="address_receptor" label="Dirección" fullWidth autoComplete="Dirección" />
         </Grid>
       </Grid>
     </React.Fragment>
