@@ -12,8 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import HeaderForm from './HeaderForm';
 import PaymentForm from './PaymentForm';
 import EmisorForm from './Emisor';
+import DetalleFacturaForm from './DetalleFactura';
 import BillForm from './Bill'
 import Review from './Review';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Modo de venta'];
+const steps = ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Modo de venta'];
 
 function getStepContent(step) {
   switch (step) {
@@ -65,8 +67,10 @@ function getStepContent(step) {
       return <PaymentForm />;
     case 3:
       return <BillForm />;
-
     case 4:
+      return <DetalleFacturaForm />;
+
+    case 5:
       return <Review />;
     default:
       throw new Error('Unknown step');
