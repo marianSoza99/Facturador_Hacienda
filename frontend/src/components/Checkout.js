@@ -65,7 +65,6 @@ function getStepContent(step) {
       return <PaymentForm />;
     case 3:
       return <BillForm />;
-
     case 4:
       return <Review />;
     default:
