@@ -13,7 +13,7 @@ router.route('/cats').get((req, res) => {
 
 router.route('/cat1').get((req, res) => {
     var resp = [];
-    cabysAdapter.getCategory2(req.codigo, resp);
+    cabysAdapter.getCategory2(req.body.codigo, resp);
     res.send(resp[0]);
 });
 
