@@ -1,17 +1,13 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import AddIcon from '@material-ui/icons/Add';
-import DescriptionIcon from '@material-ui/icons/Description';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from "../images/detalleFactura.jpg";
-import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const  act_e= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'}, , {label:'Otros'}];
+const  act_e= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'}, {label:'Otros'}];
 
 
 
@@ -33,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    spacing: (5),
+    spacing: (12),
   },
   avatar: {
     margin: theme.spacing(4),
@@ -63,7 +59,7 @@ export default function SignInSide() {
     <Grid item xs={false} sm={4} md={6} className={classes.image} />
     <Grid item xs={12} sm={8} md={6} component={Paper}  square>
         <div className={classes.paper}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} spacing={5}>
           <Autocomplete
           id="idtype_combobox"
            options={act_e}
@@ -72,7 +68,7 @@ export default function SignInSide() {
              renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
              />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} spacing={5}>
           <TextField
             required
             id="idProduct"
@@ -81,7 +77,7 @@ export default function SignInSide() {
             autoComplete="Código"
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} spacing={5}>
           <TextField
             required
             id="descriptionProduct"
@@ -90,7 +86,7 @@ export default function SignInSide() {
             autoComplete="Descripción"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} spacing={5}>
           <Autocomplete
           id="idtype_combobox"
            options={act_e}
