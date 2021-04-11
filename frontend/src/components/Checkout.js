@@ -77,6 +77,8 @@ function getStepContent(step) {
   }
 }
 
+
+
 export default function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -84,7 +86,7 @@ export default function Checkout() {
   const handleNext = () => {
     setActiveStep(activeStep + 1);
 
-    axios.post(`http://localhost:5000/bill/cat1`, {codigo:"1"})
+    axios.get(`http://localhost:5000/bill/cat1/1`)
       .then(res => {
         console.log(res);
         console.log(res.categories);

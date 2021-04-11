@@ -11,9 +11,9 @@ router.route('/cats').get((req, res) => {
 
 // { codigo: "" }
 
-router.route('/cat1').get((req, res) => {
+router.route('/cat1/:code/:otro').get((req, res) => {
     var resp = [];
-    cabysAdapter.getCategory2(req.body.codigo, resp);
+    cabysAdapter.getCategory2(req.params.code, resp);
     res.send(resp[0]);
 });
 
