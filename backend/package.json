@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Server side for Facturador_Hacienda app, based on Express framework.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
