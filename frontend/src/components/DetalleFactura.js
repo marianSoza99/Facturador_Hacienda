@@ -6,10 +6,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import logo from "../images/detalleFactura.jpg";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Example from './Impuestos';
+import { useModal } from "@bigfan/modal";
+
+
+
 
 const  act_e= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'}, {label:'Otros'}];
-
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,11 +29,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(5),
+    margin: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
+
     alignItems: 'center',
     spacing: (12),
+    alignItems: 'center'
+
   },
   avatar: {
     margin: theme.spacing(4),
@@ -53,51 +60,66 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInSide() {
   const classes = useStyles();
 
+  const {
+    openModal,
+    types: { LOGIN },
+  } = useModal();
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
     <Grid item xs={false} sm={4} md={6} className={classes.image} />
     <Grid item xs={12} sm={8} md={6} component={Paper}  square>
         <div className={classes.paper}>
-        <Grid item xs={12} sm={6} spacing={5}>
           <Autocomplete
           id="idtype_combobox"
            options={act_e}
             getOptionLabel={(option) => option.label}
-             style={{ width: 250 }}
+             style={{ width: 400 }}
              renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
              />
-        </Grid>
-        <Grid item xs={12} md={6} spacing={5}>
+
+ 
           <TextField
             required
             id="idProduct"
             label="Código"
+            style={{ margin: 8 }}
+            margin="normal"
             fullWidth
             autoComplete="Código"
           />
-        </Grid>
-        <Grid item xs={12} md={6} spacing={5}>
           <TextField
             required
             id="descriptionProduct"
             label="Descripción"
+            style={{ margin: 8 }}
             fullWidth
+            margin="normal"
+            
             autoComplete="Descripción"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} spacing={5}>
+
+    
           <Autocomplete
           id="idtype_combobox"
            options={act_e}
             getOptionLabel={(option) => option.label}
-             style={{ width: 250 }}
+             style={{ width: 400 }}
              renderInput={(params) => <TextField {...params} label="Unidad de medida" variant="outlined" />}
              />
-        </Grid>
+             
+          <button
+            onClick={() => openModal(LOGIN)}
+            className="button button--warning button--md"
+          >
+            Log in
+          </button>
+          
           <form className={classes.form} noValidate>
           </form>
         </div>
+      
       </Grid>
   </Grid>
   
