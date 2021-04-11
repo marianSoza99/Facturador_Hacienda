@@ -7,7 +7,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const  act_e= [{label:'Contado'}, {label:'Crédito'}, {label:'Consignación'}, {label:'Apartado'},  {label:'Arrendamiento con opción de compra'},  {label:'Arrendamiento en función financiera'},  {label:'Servicios prestados al Estado a crédito'}, {label:'Pago de servicios prestados al Estado'}, {label:'Otro'}];
 
-const  sucursales= [{label:'CRC-Colón Costarricense'}, {label:'USD-Dolár Americano'}, {label:'Otro'}];
+const  sucursales= [{label:'CRC-Colón Costarricense'}, {label:'USD-Dolár Americano'}];
 
 const  doc_options= [{label:'Efectivo'}, {label:'Tarjeta'}, {label:'Transferencia - depósito bancario'}, {label:'Recaudado por terceros'}, {label:'Otros'}];
 

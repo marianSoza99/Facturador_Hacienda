@@ -15,7 +15,7 @@ import EmisorForm from './Emisor';
 import DetalleFacturaForm from './DetalleFactura';
 import BillForm from './Bill'
 import Review from './Review';
-
+//import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,6 +83,13 @@ export default function Checkout() {
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    /*
+    axios.post(`http://localhost:5000/bill/cat1`, {codigo:"1"})
+      .then(res => {
+        console.log(res);
+        console.log(res.categories);
+      })*/
+
   };
 
   const handleBack = () => {
@@ -102,7 +109,7 @@ export default function Checkout() {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Información del sucursal
+          Emisión de comprobante electrónico
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
