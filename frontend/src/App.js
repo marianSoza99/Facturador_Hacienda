@@ -21,6 +21,7 @@ removeProductFromBill = productId => {
 
 
 
+
   render() {
     return (
       <BillContext.Provider value = {{

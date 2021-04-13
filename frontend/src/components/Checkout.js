@@ -1,26 +1,34 @@
-import React from 'react';
+import React ,{ Component } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
+import StepContent from '@material-ui/core/StepContent';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import HeaderForm from './HeaderForm';
-import PaymentForm from './PaymentForm';
-import EmisorForm from './Emisor';
-import DetalleFacturaForm from './DetalleFactura';
-import BillForm from './Bill'
-import Review from './Review';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 //import axios from 'axios';
 
 
+
 const useStyles = makeStyles((theme) => ({
+  root: {
+    color: '#784af4',
+  },
   appBar: {
     position: 'relative',
+    background: 'linear-gradient(45deg, #00bfa5 90%, #1de9b6 30%)',
+    border: 0,
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   },
   layout: {
     width: 'auto',
@@ -54,9 +62,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
   },
 }));
-
-const steps = ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Modo de venta'];
-
+/*
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -76,30 +82,56 @@ function getStepContent(step) {
       throw new Error('Unknown step');
   }
 }
+*/
 
-export default function Checkout() {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+ class Bill extends Component {
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    /*
-    axios.post(`http://localhost:5000/bill/cat1`, {codigo:"1"})
-      .then(res => {
-        console.log(res);
-        console.log(res.categories);
-      })*/
+  constructor(props){
+    super(props);
+    this.state = {
+      steps: ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Documentos de referencia y otros'],
+      activePanel: 0,
+    }
+  }
 
+  swapFormActive = param => {
+    this.setState({
+      activePanel: param
+    });
+  }
+
+  handleNext = () => {
+    const { activePanel } = this.state;
+    this.setState({
+      activePanel: activePanel + 1
+    });
   };
 
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
+  handleBack = () => {
+    const { activePanel } = this.state;
+    this.setState({
+      activePanel: activePanel - 1
+    });
   };
 
+
+  render() {
+  const classes = this.props.classes;
+  const {steps} = this.state;
+  const  act_e= [{label:'CULTIVO Y VENTA DE CEREALES'}, {label:'LEGUMBRES Y GRANOS BÁSICOS NO INCLUIDAS EN CANASTA BÁSICA'}, {label:'ELABORACIÓN DE CHOCOLATE'}, {label:'IMPRESIÓN DIGITAL'}];
+  const  sucursales= [{label:'Sucursal 1'}, {label:'Sucursal 2'}, {label:'Sucursal 3'}, {label:'Sucursal 4'}];
+  const  doc_options= [{label:'Factura Electrónica'}, {label:'Nota de débito Electrónica'}, {label:'Nota de crédito Electrónica'}, {label:'Tiquete Electrónico'}, {label:'Factura Electrónica de compra'}, {label:'Factura Electrónica de compra'}];
+  const  act_emisor= [{label:'Juridica Nacional'}, {label:'Físico Nacional'}, {label:'DIDI'}, {label:'NITE'}, {label:'Pasaporte'}, {label:'DIMEX'}];
+  const  act_rec= [{label:'DIMEX'}, {label:'NITE'}, {label:'DIDI'}, {label:'Físico Nacional'}, {label:'Pasaporte'}, {label:'Juridica Nacional'}];
+  const  act_v= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'} , {label:'Otros'}];
+  const  act_paymentType= [{label:'Contado'}, {label:'Crédito'}, {label:'Consignación'}, {label:'Apartado'},  {label:'Arrendamiento con opción de compra'},  {label:'Arrendamiento en función financiera'},  {label:'Servicios prestados al Estado a crédito'}, {label:'Pago de servicios prestados al Estado'}, {label:'Otro'}];
+  const  currency= [{label:'CRC-Colón Costarricense'}, {label:'USD-Dolár Americano'}];
+  const  paymentMethod= [{label:'Efectivo'}, {label:'Tarjeta'}, {label:'Transferencia - depósito bancario'}, {label:'Recaudado por terceros'}, {label:'Otros'}];
+  const  unitOfMeasure = [{label:'unidad'}, {label:'hora'}, {label:'día'}, {label:'minuto'}, {label:'g-gramo'}]
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="absolute" color="default" className={classes.appBar}>
+      <AppBar position="absolute" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
             Facturador Hacienda
@@ -111,42 +143,413 @@ export default function Checkout() {
           <Typography component="h1" variant="h4" align="center">
           Emisión de comprobante electrónico
           </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
+          <Stepper activeStep={this.state.activePanel} className={classes.stepper} orientation="vertical">
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel className = {classes.root}>{label}</StepLabel>
+                <StepContent>
+                  {this.state.activePanel === 0 && (
+                  <React.Fragment>
+                    <Typography variant="h6" gutterBottom>
+                      Información del sucursal
+                    </Typography>
+                    <Grid container spacing={5}>
+                      <Grid item xs={12} sm={6}>
+                        <Autocomplete
+                        id="businesstype_combobox"
+                        options={act_e}
+                          getOptionLabel={(option) => option.label}
+                          style={{ width: 250 }}
+                          renderInput={(params) => <TextField {...params} label="Actividad Económica" variant="outlined" />}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Autocomplete
+                          id="business_combobox"
+                          options={sucursales}
+                            getOptionLabel={(option) => option.label}
+                            style={{ width: 250 }}
+                            renderInput={(params) => <TextField {...params} label="Sucursal" variant="outlined" />}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          required
+                          id="id_sucursal"
+                          name="id_sucursal"
+                          label="Número de sucursal"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          required
+                          id="id_caja"
+                          name="id_caja"
+                          label="Número de caja"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                          <Autocomplete
+                          id="document_combobox"
+                          options={doc_options}
+                            getOptionLabel={(option) => option.label}
+                            style={{ width: 400 }}
+                            renderInput={(params) => <TextField {...params} label="Tipo de documento" variant="outlined" />}
+                            
+                          />
+                      </Grid> 
+                    </Grid>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleNext}
+                      className={classes.button}
+                    >
+                      Siguiente
+                    </Button>
+                  </React.Fragment>
+                  )}
+                   {this.state.activePanel === 1 && (
+                      <React.Fragment>
+                      <Typography variant="h6" gutterBottom>
+                        Datos del emisor
+                      </Typography>
+                      <Grid container spacing={3}>
+                      <Grid item xs={12} sm={6}>
+                          <Autocomplete
+                          id="idtype_combobox"
+                          options={act_emisor}
+                            getOptionLabel={(option) => option.label}
+                            style={{ width: 250 }}
+                            renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField
+                            required
+                            id="idnumber"
+                            label="Número de identificación"
+                            fullWidth
+                            autoComplete="Número de identificación"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField
+                            required
+                            id="email_receptor"
+                            label="Correo electrónico"
+                            //helperText="Last three digits on signature strip"
+                            fullWidth
+                            autoComplete="correo"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField required id="phone_receptor" label="Teléfono" fullWidth autoComplete="Teléfono" />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField required id="address_receptor" label="Dirección" fullWidth autoComplete="Dirección" />
+                        </Grid>
+                      </Grid>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleBack}
+                        className={classes.button}
+                        >
+                        Atrás
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                        >
+                          Siguiente
+                        </Button>
+                      </React.Fragment>
+                   )}
+                    {this.state.activePanel === 2 && (
+                      <React.Fragment>
+                        <Typography variant="h6" gutterBottom>
+                          Datos del receptor
+                        </Typography>
+                        <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                            id="idtype_combobox"
+                              options={act_rec}
+                              getOptionLabel={(option) => option.label}
+                                style={{ width: 250 }}
+                                renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              required
+                              id="idnumber"
+                              label="Número de identificación"
+                              fullWidth
+                              autoComplete="Número de identificación"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <TextField
+                              required
+                              id="email_receptor"
+                              label="Correo electrónico"
+                              //helperText="Last three digits on signature strip"
+                              fullWidth
+                              autoComplete="correo"
+                            />
+                          </Grid>
+                        </Grid>
+                        <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleBack}
+                        className={classes.button}
+                        >
+                        Atrás
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                        >
+                          Siguiente
+                        </Button>
+                      </React.Fragment> 
+                    )}
+                    {this.state.activePanel === 3 && (
+                      <React.Fragment>
+                      <Typography variant="h6" gutterBottom>
+                        Datos de pago
+                      </Typography>
+                      <Grid container spacing={5}>
+                        <Grid item xs={12} sm={6}>
+                          <Autocomplete
+                          id="businesstype_combobox"
+                           options={act_paymentType}
+                            getOptionLabel={(option) => option.label}
+                             style={{ width: 250 }}
+                             renderInput={(params) => <TextField {...params} label="Codición de venta" variant="outlined" />}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <Autocomplete
+                            id="business_combobox"
+                            options={currency}
+                              getOptionLabel={(option) => option.label}
+                              style={{ width: 250 }}
+                              renderInput={(params) => <TextField {...params} label="Moneda de venta" variant="outlined" />}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            id="id_credit"
+                            name="id_credit"
+                            label="Plazo de crédito"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            required
+                            id="id_exchangeType"
+                            name="id_exchangeType"
+                            label="Tipo de cambio"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            
+                            id="id_saleCondition"
+                            name="id_saleCondition"
+                            label="Detalle de condición de venta"
+                            fullWidth
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            required
+                            id="id_exchangeTypeDetail"
+                            name="id_exchangeTypeDetail"
+                            label="Detalle de forma de cambio"
+                            fullWidth
+                          />
+                        </Grid>
+                        
+                        <Grid item xs={12} sm={6}>
+                            <Autocomplete
+                            id="payMethod"
+                            options={paymentMethod}
+                              getOptionLabel={(option) => option.label}
+                              style={{ width: 400 }}
+                              renderInput={(params) => <TextField {...params} label="Forma de pago" variant="outlined" />}
+                              
+                            />
+                        </Grid> 
+                        </Grid>
+                        <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleBack}
+                        className={classes.button}
+                        >
+                        Atrás
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                        >
+                          Siguiente
+                        </Button>
+                      </React.Fragment>
+                    )}
+                    {this.state.activePanel === 4 && (
+                     <React.Fragment>
+                      <Typography variant="h6" gutterBottom>
+                          Ingreso de Productos
+                        </Typography>
+                     <Grid container spacing={3}>
+                     <Grid item xs={6} spacing={3}>
+                       
+                       <Autocomplete
+                        id="idtype_combobox"
+                        options={act_v}
+                          getOptionLabel={(option) => option.label}
+                          style={{ width: 400 }}
+                          renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
+                        />
+
+                        <TextField
+                          required
+                          id="idProduct"
+                          label="Código"
+                          style={{ margin: 8 }}
+                          margin="normal"
+                          fullWidth
+                          autoComplete="Código"
+                        />
+                        <TextField
+                          required
+                          id="descriptionProduct"
+                          label="Descripción"
+                          style={{ margin: 10 }}
+                          fullWidth
+                          margin="normal"
+                          
+                          autoComplete="Descripción"
+                        />
+                      <Autocomplete
+                        required
+                        id="idtype_combobox"
+                        options={unitOfMeasure}
+                        getOptionLabel={(option) => option.label}
+                        style={{ width: 400 }}
+                        renderInput={(params) => <TextField {...params} label="Unidad de medida" variant="outlined" />}
+                      />
+
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        >
+                        Agregar línea
+                      </Button> 
+                     </Grid>
+                     <Grid item xs={6}>
+                       
+                       <Autocomplete
+                        id="idtype_combobox"
+                        options={act_e}
+                          getOptionLabel={(option) => option.label}
+                          style={{ width: 400 }}
+                          renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
+                          />
+                         
+                     </Grid>
+                     <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleBack}
+                        className={classes.button}
+                        >
+                        Atrás
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                        >
+                          Siguiente
+                        </Button>
+                      
+                     </Grid>
+                     </React.Fragment>
+                    )}
+                    {this.state.activePanel === 5 &&(
+                      <React.Fragment>
+                      <Typography variant="h6" gutterBottom>
+                        Documentos de referencia
+                      </Typography>
+                      <Typography variant="h6" gutterBottom>
+                        Otros
+                      </Typography>
+                        <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleBack}
+                        className={classes.button}
+                        >
+                        Atrás
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                        >
+                          Siguiente
+                        </Button>
+                      </React.Fragment>
+                    )} 
+                </StepContent>
               </Step>
             ))}
           </Stepper>
           <React.Fragment>
-            {activeStep === steps.length ? (
+            {this.state.activePanel === steps.length &&  (
               <React.Fragment>
                 <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
+                  Resumen
                 </Typography>
                 <Typography variant="subtitle1">
                   Your order number is #2001539. We have emailed your order confirmation, and will
                   send you an update when your order has shipped.
                 </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Atrás
-                    </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.handleBack}
+                  className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Generar y firmar factura' : 'Siguiente'}
-                  </Button>
-                </div>
+                  Atrás
+                </Button>
               </React.Fragment>
             )}
           </React.Fragment>
@@ -154,4 +557,12 @@ export default function Checkout() {
       </main>
     </React.Fragment>
   );
+  }
+}
+
+
+export default () => {
+
+  const classes = useStyles();
+  return <Bill classes={classes} />;
 }
