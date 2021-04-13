@@ -43,9 +43,6 @@ var SUCCESS_ALL_GOOD = "1";
 
 var API_url = "https://api-demo.crlibre.org/api.php";
 
-//Var to store user data
-var API_user = "";
-
 /*********************************************/
 /* Function to check login users             */
 /* Req success, error                        */
@@ -96,7 +93,7 @@ export function APILogin(userData, success, error){
             
     API_postRequest(req, userData, 
         function(data){
-            if(data.resp){
+            if(data.resp == 1){
                 if(success != null){
                     success(data);
                 }
@@ -122,7 +119,163 @@ export function APIGenerateXML(userData, success, error){
             
     API_postRequest(req, userData, 
         function(data){
-            if(data.resp != ERROR_USER_WRONG_LOGIN_INFO){
+            if(data.resp == 1){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+export function APIGetConsecutive(userData, success, error){
+    var req = {
+        w: "clave",
+        r: "clave",
+    };
+            
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == 1){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+export function APIUploadCertificate(userData, success, error){
+    var req = {
+        w: "fileUploader",
+        r: "subir_certif",
+    };
+            
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == 1){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+export function APIGetToken(userData, success, error){
+    var req = {
+        w: "token",
+        r: "gettoken",
+    };
+            
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == 1){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+export function APIRefreshToken(userData, success, error){
+    var req = {
+        w: "token",
+        r: "refresh",
+    };
+            
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == 1){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+export function APISignXML(userData, success, error){
+    var req = {
+        w: "signXML",
+        r: "signFE",
+    };
+            
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == 1){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+export function APISendXML(userData, success, error){
+    var req = {
+        w: "send",
+        r: "json",
+    };
+            
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == 1){
                 if(success != null){
                     success(data);
                 }

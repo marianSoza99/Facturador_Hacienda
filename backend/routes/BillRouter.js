@@ -3,7 +3,10 @@ const cabysAdapter = require('../Model/CABySAdapter');*/
 
 import express from 'express'
 const router = express.Router();
-import { getCategory1, getCategory2, getCategory3, getCategory4, getCategory5, getCategory6, getCategory7, getCategory8 } from '../Model/CABySAdapter.js'
+import {    getCategory1, getCategory2, getCategory3, 
+            getCategory4, getCategory5, getCategory6, 
+            getCategory7, getCategory8 } from '../Model/CABySAdapter.js'
+import { APIGetConsecutive } from '../Model/HaciendaAPIAdapter.js'
 
 router.route('/cat/:category/:code').get((req, res) => {
     var resp = []
