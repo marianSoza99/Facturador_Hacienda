@@ -1,4 +1,4 @@
-export class ProductLine {
+export default class ProductLine {
 
     constructor(productName, productCode, meassurment, quantity, unitPrice,
                 discount, discountDescription, total, subtotal, lineTotal){

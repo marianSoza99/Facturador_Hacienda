@@ -19,8 +19,10 @@
 /*            CONS             */
 /*******************************/
 
-var FormData = require('form-data');
-var fetch = require("node-fetch");
+/*var FormData = require('form-data');
+var fetch = require("node-fetch");*/
+import FormData from 'form-data';
+import fetch from 'node-fetch'
 
 // Users
 var ERROR_NO_VALID_USER = "-300";
@@ -331,4 +333,4 @@ function API_resultToMsg(r){
     }
 }
 
-module.exports = { APILogin };
+export {APILogin};

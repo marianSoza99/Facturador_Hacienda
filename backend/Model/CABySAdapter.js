@@ -1,4 +1,5 @@
-const xlsx = require('xlsx');
+//const xlsx = require('xlsx');
+import xlsx from 'xlsx'
 
 var workbook;
 var Sheets;
@@ -6,10 +7,10 @@ var cabys;
 var first = true;
 var print = console.log
 
-var getCategory1 = function(res){
+export var getCategory1 = function(res){
     if (first){
         workbook = xlsx.readFile("./Model/src/Catalogo-de-bienes-servicios.xlsx");
-        sheet = workbook.Sheets["Cabys"];
+        var sheet = workbook.Sheets["Cabys"];
         cabys = xlsx.utils.sheet_to_json(sheet);
         first = false;
     }
@@ -25,7 +26,7 @@ var getCategory1 = function(res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory2 = function(filter, res){
+export var getCategory2 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat1 == filter);
 
     var codes = []
@@ -43,7 +44,7 @@ var getCategory2 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory3 = function(filter, res){
+export var getCategory3 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat2 == filter);
 
     var codes = []
@@ -61,7 +62,7 @@ var getCategory3 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory4 = function(filter, res){
+export var getCategory4 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat3 == filter);
 
     var codes = []
@@ -79,7 +80,7 @@ var getCategory4 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory5 = function(filter, res){
+export var getCategory5 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat4 == filter);
 
     var codes = []
@@ -97,7 +98,7 @@ var getCategory5 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory6 = function(filter, res){
+export var getCategory6 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat5 == filter);
 
     var codes = []
@@ -115,7 +116,7 @@ var getCategory6 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory7 = function(filter, res){
+export var getCategory7 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat6 == filter);
 
     var codes = []
@@ -133,7 +134,7 @@ var getCategory7 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-var getCategory8 = function(filter, res){
+export var getCategory8 = function(filter, res){
     var filteredRecords = Object.entries(cabys).filter(([key, value]) => value.Cat7 == filter);
 
     var codes = []
@@ -151,4 +152,4 @@ var getCategory8 = function(filter, res){
     res.push({categories: categories, products: products})
 };
 
-module.exports = { getCategory1, getCategory2, getCategory3, getCategory4, getCategory5, getCategory6, getCategory7, getCategory8 };
+//module.exports = { getCategory1, getCategory2, getCategory3, getCategory4, getCategory5, getCategory6, getCategory7, getCategory8 };
