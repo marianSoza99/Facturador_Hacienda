@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     position: 'relative',
-    background: 'linear-gradient(45deg, #00bfa5 90%, #1de9b6 30%)',
+    background: 'linear-gradient(45deg, #283593 90%, #1de9b6 30%)',
     border: 0,
     color: 'white',
     height: 48,
