@@ -19,8 +19,6 @@ removeProductFromBill = productId => {
   console.log('Removing product with id:' + productId);
 };
 
-
-
   render() {
     return (
       <BillContext.Provider value = {{
