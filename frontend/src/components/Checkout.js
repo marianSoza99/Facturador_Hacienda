@@ -14,6 +14,7 @@ import PaymentForm from './PaymentForm';
 import EmisorForm from './Emisor';
 import DetalleFacturaForm from './DetalleFactura';
 import BillForm from './Bill'
+import ReferencesForm from './References'
 import Review from './Review';
 //import axios from 'axios';
 
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Modo de venta'];
+const steps = ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Modo de venta', 'Documentos de referencia'];
 
 function getStepContent(step) {
   switch (step) {
@@ -72,6 +73,9 @@ function getStepContent(step) {
 
     case 5:
       return <Review />;
+
+    case 6:
+      return <ReferencesForm/>;
     default:
       throw new Error('Unknown step');
   }

@@ -7,10 +7,6 @@ import logo from "../images/detalleFactura.jpg";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Example from './Impuestos';
-import { useModal } from "@bigfan/modal";
-
-
 
 
 const  act_e= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'}, {label:'Otros'}];
@@ -60,10 +56,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInSide() {
   const classes = useStyles();
 
-  const {
-    openModal,
-    types: { LOGIN },
-  } = useModal();
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -108,14 +100,7 @@ export default function SignInSide() {
              style={{ width: 400 }}
              renderInput={(params) => <TextField {...params} label="Unidad de medida" variant="outlined" />}
              />
-             
-          <button
-            onClick={() => openModal(LOGIN)}
-            className="button button--warning button--md"
-          >
-            Log in
-          </button>
-          
+                       
           <form className={classes.form} noValidate>
           </form>
         </div>

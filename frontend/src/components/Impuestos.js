@@ -1,37 +1,30 @@
 import React, {Component} from 'react'
+/*
 import { Modal, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import  {useState, render } from 'react';
+import React from "react";
 
-export default function Example() {
-    const [show, setShow] = useState(false);
-  
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-  
-    return (
-      <>
-        <Button variant="primary" onClick={handleShow}>
-          Launch demo modal
-        </Button>
-  
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  }
-  
-  render(<Example />);
+import nature from "static/icons/nature.svg";
 
+import * as styles from "./styles";
+
+export default function Login() {
+  return (
+    <styles.Login>
+      <styles.FormWrapper>
+        <styles.Form>
+          <h1>Login to bigfan Modal</h1>
+          <styles.TextInput name="email" type="text" placeholder="Your email" />
+          <styles.TextInput
+            name="password"
+            type="password"
+            placeholder="Your password"
+          />
+          <styles.SubmitButton type="submit" />
+        </styles.Form>
+      </styles.FormWrapper>
+      <styles.Illustration src={nature} />
+    </styles.Login>
+  );
+} */
