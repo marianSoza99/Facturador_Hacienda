@@ -13,8 +13,6 @@ import logo from "../images/flex2.png";
 import { Link } from 'react-router-dom';
 
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',

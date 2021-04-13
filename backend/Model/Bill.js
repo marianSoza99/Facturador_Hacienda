@@ -55,187 +55,98 @@ export default class Bill{
         }
 
     //Getter
-    get key(){
-        return this.#key;
-    }
 
-    get consecutive(){
-        return this.#consecutive;
-    }
+    get key(){ return this.#key; }
 
-    get issueDate(){
-        return this.#issueDate;
-    }
+    get consecutive(){ return this.#consecutive; }
 
-    get emitter(){
-        return this.#emitter;
-    }
+    get issueDate(){ return this.#issueDate; }
 
-    get receiver(){
-        return this.#receiver;
-    }
+    get emitter(){ return this.#emitter; }
 
-    get sellCondition(){
-        return this.#sellCondition;
-    }
+    get receiver(){ return this.#receiver; }
 
-    get creditTerm(){
-        return this.#creditTerm;
-    }
+    get sellCondition(){ return this.#sellCondition; }
 
-    get payMethod(){
-        return this.#payMethod;
-    }
+    get creditTerm(){ return this.#creditTerm; }
 
-    get currencyCode(){
-        return this.currencyCode;
-    }
+    get payMethod(){ return this.#payMethod; }
 
-    get exchangeRate(){
-        return this.#exchangeRate;
-    }
+    get currencyCode(){ return this.currencyCode; }
 
-    get totalSavedServices(){
-        return this.#totalSavedServices;
-    }
+    get exchangeRate(){ return this.#exchangeRate; }
 
-    get totalExcemptServices(){
-        return this.#totalExcemptServices;
-    }
+    get totalSavedServices(){ return this.#totalSavedServices; }
 
-    get totalSavedMerch(){
-        return this.#totalSavedMerch;
-    }
+    get totalExcemptServices(){ return this.#totalExcemptServices; }
 
-    get totalExcemptMerch(){
-        return this.#totalExcemptMerch;
-    }
+    get totalSavedMerch(){ return this.#totalSavedMerch; }
+
+    get totalExcemptMerch(){ return this.#totalExcemptMerch; }
     
-    get totalSaved(){
-        return this.#totalSaved;
-    }
+    get totalSaved(){ return this.#totalSaved; }
 
-    get totalExcempted(){
-        return this.#totalExcempted;
-    }
+    get totalExcempted(){ return this.#totalExcempted; }
 
-    get totalSold(){
-        return this.#totalSold;
-    }
+    get totalSold(){ return this.#totalSold; }
 
-    get totalDiscount(){
-        return this.#totalDiscount;
-    }
+    get totalDiscount(){ return this.#totalDiscount; }
 
-    get totalNetSold(){
-        return this.#totalNetSold;
-    }
+    get totalNetSold(){ return this.#totalNetSold; }
 
-    get totalTaxes(){
-        return this.#totalTaxes;
-    }
+    get totalTaxes(){ return this.#totalTaxes; }
 
-    get totalVoucher(){
-        return this.#totalVoucher;
-    }
+    get totalVoucher(){ return this.#totalVoucher; }
 
-    get lines(){
-        return this.#lines;
-    }
+    get lines(){ return this.#lines; }
 
-    get referenceDocuments(){
-        return this.#referenceDocuments;
-    }
+    get referenceDocuments(){ return this.#referenceDocuments; }
 
-    get otherCharges(){
-        return this.#otherCharges;
-    }
+    get otherCharges(){ return this.#otherCharges; }
 
     //Setter
 
-    set key(key){
-        this.#key = key;
-    }
+    set key(key){ this.#key = key; }
 
-    set consecutive(consecutive){
-        this.#consecutive = consecutive;
-    }
+    set consecutive(consecutive){ this.#consecutive = consecutive; }
 
-    set issueDate(issueDate){
-        this.#issueDate = issueDate;
-    }
+    set issueDate(issueDate){ this.#issueDate = issueDate; }
 
-    set emitter(emitter){
-        this.#emitter = emitter;
-    }
+    set emitter(emitter){ this.#emitter = emitter; }
 
-    set receiver(receiver){
-        this.#receiver = receiver;
-    }
+    set receiver(receiver){ this.#receiver = receiver; }
 
-    set sellCondition(sellCondition){
-        this.#sellCondition = sellCondition;
-    }
+    set sellCondition(sellCondition){ this.#sellCondition = sellCondition; }
 
-    set creditTerm(creditTerm){
-        this.#creditTerm = creditTerm;
-    }
+    set creditTerm(creditTerm){ this.#creditTerm = creditTerm; }
 
-    set payMethod(payMethod){
-        this.#payMethod = payMethod;
-    }
+    set payMethod(payMethod){ this.#payMethod = payMethod; }
 
-    set currencyCode(currencyCode){
-        this.currencyCode = currencyCode;
-    }
+    set currencyCode(currencyCode){ this.currencyCode = currencyCode; }
 
-    set exchangeRate(exchangeRate){
-        this.#exchangeRate = exchangeRate;
-    }
+    set exchangeRate(exchangeRate){ this.#exchangeRate = exchangeRate; }
 
-    set totalSavedServices(amount){
-        this.#totalSavedServices = amount;
-    }
+    set totalSavedServices(amount){ this.#totalSavedServices = amount; }
 
-    set totalExcemptServices(amount){
-        this.#totalExcemptServices = amount;
-    }
+    set totalExcemptServices(amount){ this.#totalExcemptServices = amount; }
 
-    set totalSavedMerch(amount){
-        this.#totalSavedMerch = amount;
-    }
+    set totalSavedMerch(amount){ this.#totalSavedMerch = amount; }
 
-    set totalExcemptMerch(amount){
-        this.#totalExcemptMerch = amount;
-    }
+    set totalExcemptMerch(amount){ this.#totalExcemptMerch = amount; }
     
-    set totalSaved(amount){
-        this.#totalSaved = amount;
-    }
+    set totalSaved(amount){ this.#totalSaved = amount; }
 
-    set totalExcempted(amount){
-        this.#totalExcempted = amount;
-    }
+    set totalExcempted(amount){ this.#totalExcempted = amount; }
 
-    set totalSold(amount){
-        this.#totalSold = amount;
-    }
+    set totalSold(amount){ this.#totalSold = amount; }
 
-    set totalDiscount(amount){
-        this.#totalDiscount = amount;
-    }
+    set totalDiscount(amount){ this.#totalDiscount = amount; }
 
-    set totalNetSold(amount){
-        this.#totalNetSold = amount;
-    }
+    set totalNetSold(amount){ this.#totalNetSold = amount; }
 
-    set totalTaxes(amount){
-        this.#totalTaxes = amount;
-    }
+    set totalTaxes(amount){ this.#totalTaxes = amount; }
 
-    set totalVoucher(amount){
-        this.#totalVoucher = amount;
-    }
+    set totalVoucher(amount){ this.#totalVoucher = amount; }
 
     addLine(name, code, meassure, quantity, price, discount, discDescription, total, subtotal, lineTotal){
         var line = new ProductLine(name, code, meassure, quantity, price, discount, discDescription, total, subtotal, lineTotal);
@@ -250,12 +161,122 @@ export default class Bill{
         this.#lines.splice(index, 1);
     }
 
-    addReferenceDocumentDocuments(doc){
-        this.#referenceDocuments.push(doc);
+    addReferenceDocumentDocuments(doc, docType, docNumber, issueDate, referenceCode, description){
+        var document = new ReferenceDocument(doc, docType, docNumber, issueDate, referenceCode, description);
+        this.#referenceDocuments.push(document);
     }
 
-    addOtherCharges(charge){
+    removeReferenceDocument(index){
+        this.#referenceDocuments.splice(index, 1);
+    }
+
+    addOtherCharges(doc, docType, description, chargeAmount, thirdPartyIDType, thirdPartyID, thirdPartyName){
+        var charge = new OtherCharge(doc, docType, description, chargeAmount, thirdPartyIDType, thirdPartyID, thirdPartyName);
         this.#otherCharges.push(charge);
     }
+
+    removeOtherCharge(index){
+        this.#otherCharges.splice(index, 1);
+    }
+
+}
+
+class ReferenceDocument{
+    #doc;
+    #docType;
+    #docNumber;
+    #issueDate;
+    #referenceCode;
+    #description;
+
+    constructor(doc, docType, docNumber, issueDate, referenceCode, description){
+        this.#doc = doc;
+        this.#docType = docType;
+        this.#docNumber = docNumber;
+        this.#issueDate = issueDate;
+        this.#referenceCode = referenceCode;
+        this.#description = description;
+    }
+
+    //Getter
+
+    get doc(){ return this.#doc; }
+
+    get docType(){ return this.#docType; }
+
+    get docNumber(){ return this.#docNumber; }
+
+    get issueDate(){ return this.#issueDate; }
+
+    get referenceCode(){ return this.#referenceCode; }
+
+    get description(){ return this.#description; }
+
+    //Setter
+
+    set doc(){this.#doc = doc; }
+
+    set docType(){this.#docType = docType; }
+
+    set docNumber(){this.#docNumber = docNumber; }
+
+    set issueDate(){this.#issueDate = issueDate; }
+
+    set referenceCode(){this.#referenceCode = referenceCode; }
+
+    set description(){this.#description = description; }
+
+}
+
+class OtherCharge{
+    #doc;
+    #docType;
+    #description;
+    #chargeAmount;
+    #thirdPartyIDType;
+    #thirdPartyID;
+    #thirdPartyName;
+
+    constructor(doc, docType, description, chargeAmount, thirdPartyIDType, thirdPartyID, thirdPartyName){
+        this.#doc = doc;
+        this.#docType = docType;
+        this.#description = description;
+        this.#chargeAmount = chargeAmount;
+        this.#thirdPartyIDType = thirdPartyIDType;
+        this.#thirdPartyID = thirdPartyID;
+        this.#thirdPartyName = thirdPartyName;
+    }
+
+    //Getter
+    
+    get doc(){ return this.#doc; }
+    
+    get docType(){ return this.#docType; }
+    
+    get description(){ return this.#description; }
+    
+    get chargeAmount(){ return this.#chargeAmount; }
+    
+    get thirdPartyIDType(){ return this.#thirdPartyIDType; }
+    
+    get thirdPartyID(){ return this.#thirdPartyID; }
+    
+    get thirdPartyName(){ return this.#thirdPartyName; }
+
+    //Setter
+
+    set doc(doc){ this.#doc = doc; }
+    
+    set docType(docType){ this.#docType = docType; }
+    
+    set description(description){ this.#description = description; }
+    
+    set chargeAmount(chargeAmount){ this.#chargeAmount = chargeAmount; }
+    
+    set thirdPartyIDType(thirdPartyIDType){ this.#thirdPartyIDType = thirdPartyIDType; }
+    
+    set thirdPartyID(thirdPartyID){ this.#thirdPartyID = thirdPartyID; }
+    
+    set thirdPartyName(thirdPartyName){ this.#thirdPartyName = thirdPartyName; }
 
 }
