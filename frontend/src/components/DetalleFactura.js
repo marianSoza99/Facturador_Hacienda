@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -6,9 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import logo from "../images/detalleFactura.jpg";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const  act_e= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'} , {label:'Otros'}];
-
 
 
 
@@ -67,7 +67,7 @@ export default function SignInSide() {
              renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
              />
 
- 
+
           <TextField
             required
             id="idProduct"
@@ -87,8 +87,6 @@ export default function SignInSide() {
             
             autoComplete="Descripción"
           />
-
-    
           <Autocomplete
           id="idtype_combobox"
            options={act_e}
@@ -96,6 +94,7 @@ export default function SignInSide() {
              style={{ width: 400 }}
              renderInput={(params) => <TextField {...params} label="Unidad de medida" variant="outlined" />}
              />
+
 
           <form className={classes.form} noValidate>
           </form>
