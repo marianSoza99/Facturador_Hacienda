@@ -4,13 +4,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import homepage from "./components/homepage"
 import factura from "./components/Checkout"
 import BillContext from "./context/bill-context"
-
+import axios from 'axios';
 
 class App extends Component {
   state = {
     headerinfo : [],
     products: []
-  }
+  } 
 
 addProductToBill = product => {
   console.log('Adding product', product);

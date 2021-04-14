@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -36,26 +37,33 @@ var Uploader = function UploaderComponent(props){
     };
 
     const handleSubmission = () => {
-    const formData = new FormData();
 
-        formData.append('file', selectedFile);
+      const formData = new FormData();
+      formData.append('fileToUpload', selectedFile);
 
-    console.log(selectedFile)
+      axios.get("http://localhost:5000/per").then(
+        (res) => {
+          formData.append("w", "fileUploader");
+          formData.append("r", "subir_certif");
+          formData.append("iam", res.data.userName);
+          formData.append("sessionKey", res.data.sessionKey);
 
-        fetch(
-            props.url,
+          fetch("https://api-demo.crlibre.org/api.php",
             {
-                method: 'POST',
-                body: formData,
+              method: 'POST',
+              body: formData,
             }
-        )
+          )
             .then((response) => response.json())
             .then((result) => {
                 console.log('Success:', result);
             })
             .catch((error) => {
                 console.error('Error:', error);
-            });
+            }
+          );
+        }
+      )
     };
 
     return(

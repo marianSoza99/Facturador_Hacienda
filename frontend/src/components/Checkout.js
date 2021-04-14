@@ -162,7 +162,7 @@ function getStepContent(step) {
           <Typography component="h1" variant="h4" align="center">
           Emisión de comprobante electrónico
           </Typography>
-          <Uploader url="http://localhost:5000/bill/uploadCertificate"/>
+          <Uploader url="https://api-demo.crlibre.org/api.php"/>
           <Stepper activeStep={this.state.activePanel} className={classes.stepper} orientation="vertical">
             {steps.map((label) => (
               <Step key={label}>

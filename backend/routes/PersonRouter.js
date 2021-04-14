@@ -5,16 +5,12 @@ const router = express.Router();
 import {APILogin} from '../Model/HaciendaAPIAdapter.js'
 
 router.route('/').get((req, res) => {
-    var sessionKey;
-    APILogin({userName:'dennisangulo',pwd:'123'}, 
+    APILogin({userName:'magnaloracruz',pwd:'1234'}, 
         function(success){
-            sessionKey = success.resp.sessionKey;
-            console.log(sessionKey);
-            res.send(success)
+            res.send(success.resp)
         },
         function(error){
             res.send(error)
-            console.log(error);
         }
     );
 });
