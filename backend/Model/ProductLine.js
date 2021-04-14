@@ -2,6 +2,7 @@ export default class ProductLine {
 
     constructor(productName, productCode, meassurment, quantity, unitPrice,
                 discount, discountDescription, total, subtotal, lineTotal){
+                    
         this.attrProductName = productName;
         this.attrProductCode = productCode;
         this.attrMeassurment = meassurment;
@@ -111,6 +112,28 @@ export default class ProductLine {
             this.attrTaxes[taxIndex].addExoneration(docType, docNumber, institutionName, issueDate, taxAmount, purchPercentage);
         }
     }
+
+    format(){
+        var lineJSON = {};
+        var taxes = {};
+
+        for (var i = 1; i <= this.attrTaxes.lenght; i++){
+            taxes[i.toString()] = this.attrTaxes[i - 1].format();
+        }
+
+        lineJSON["cantidad"] = this.attrQuantity;
+        lineJSON["unidadMedida"] = this.attrMeassurment;
+        lineJSON["detalle"] = this.attrProductName;
+        lineJSON["precioUnitario"] = this.attrUnitPrice;
+        lineJSON["montoTotal"] = this.attrTotal;
+        lineJSON["subtotal"] = this.attrSubtotal;
+        lineJSON["montoTotalLinea"] = this.attrLineTotal;
+        lineJSON["montoDescuento"] = this.attrDiscount;
+        lineJSON["naturalezaDescuento"] = this.attrDiscountDescription;
+        lineJSON["impuesto"] = taxes;
+
+        return lineJSON;
+    }
 }
 
 class Tax {
@@ -159,6 +182,21 @@ class Tax {
     addExoneration(docType, docNumber, institutionName, issueDate, taxAmount, purchPercentage){
         var exoneration = new Exoneration(docType, docNumber, institutionName, issueDate, taxAmount, purchPercentage);
         this.attrExonerations.push(exoneration);
+    }
+
+    format(){
+        var taxJSON = {};
+
+        exoJSON["codigo"] = this.attrCode;
+        exoJSON["tarifa"] = this.attrPercentage;
+        exoJSON["monto"] = this.attrAmount;
+
+        if (this.attrExonerations.lenght > 0) {
+            taxJSON["exoneracion"] = this.attrExonerations[0].format();
+        }
+
+        return taxJSON;
+        
     }
 }
 
@@ -221,5 +259,16 @@ export class Exoneration {
 
     set purchPercentage(purchPercentage){
         this.attrPurchPercentage = purchPercentage;
+    }
+
+    format(){
+        return {
+            "tipoDocumento": this.attrDocType,
+            "numeroDocumento": this.attrDocNumber,
+            "nombreInstitucion": this.attrInstitutionName,
+            "fechaEmision": this.attrIssueDate,
+            "montoImpuesto": this.attrTaxAmount,
+            "porcentajeCompra": this.attrPurchPercentage
+        }
     }
 }

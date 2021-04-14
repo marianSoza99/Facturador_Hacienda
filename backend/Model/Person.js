@@ -7,11 +7,13 @@ export default class Person{
     #district;
     #neighborhood;
     #countryCode;
+    #telefone;
+    #countryCodeFax;
     #fax;
     #email;
 
     constructor (name, IDType, ID, province, canton, district, 
-                 neighborhood, countryCode, fax, email) {
+                 neighborhood, countryCode, telefone, fax, email) {
         this.#name = name;
         this.#IDType = IDType;
         this.#ID = ID;
@@ -20,6 +22,8 @@ export default class Person{
         this.#district = district;
         this.#neighborhood = neighborhood;
         this.#countryCode = countryCode;
+        this.#telefone = telefone,
+        this.#countryCodeFax = countryCodeFax;
         this.#fax = fax;
         this.#email = email;
     }
@@ -56,6 +60,14 @@ export default class Person{
 
     get countryCode(){
         return this.#countryCode;
+    }
+
+    get telefone(){
+        return this.#telefone;
+    }
+
+    get countryCodeFax(){
+        return this.#countryCodeFax;
     }
 
     get fax(){
@@ -99,6 +111,14 @@ export default class Person{
 
     set countryCode(countryCode){
         this.#countryCode = countryCode;
+    }
+
+    set telefone(telefone){
+        this.#telefone = telefone;
+    }
+
+    set countryCodeFax(code){
+        this.#countryCodeFax = code;
     }
 
     set fax(fax){

@@ -1,4 +1,4 @@
-import ProductLine from './ProductLine'
+import ProductLine from './ProductLine.js'
 
 export default class Bill{
     #key;
@@ -22,12 +22,14 @@ export default class Bill{
     #totalNetSold;
     #totalTaxes;
     #totalVoucher;
+    #others;
+    #othersType;
     #lines;
     #referenceDocuments;
     #otherCharges;
 
     constructor(key, consecutive, emitter, receiver, sellCondition, creditTerm,
-        payMethod, currencyCode, exchangeRate){
+        payMethod, currencyCode, exchangeRate, others, othersType, lines, refDocs, charges){
             this.#key = key;
             this.#consecutive = consecutive;
             //this.#issueDate = ;
@@ -49,9 +51,11 @@ export default class Bill{
             this.#totalNetSold = 0;
             this.#totalTaxes = 0;
             this.#totalVoucher = 0;
-            this.#lines = [];
-            this.#referenceDocuments = [];
-            this.#otherCharges = [];
+            this.#others = others;
+            this.#othersType = othersType;
+            this.#lines = lines;
+            this.#referenceDocuments = refDocs;
+            this.#otherCharges = charges;
         }
 
     //Getter
@@ -82,7 +86,7 @@ export default class Bill{
 
     get totalSavedMerch(){ return this.#totalSavedMerch; }
 
-    get totalExcemptMerch(){ return this.#totalExcemptMerch; }
+    get totalExcemptedMerch(){ return this.#totalExcemptedMerch; }
     
     get totalSaved(){ return this.#totalSaved; }
 
@@ -97,6 +101,10 @@ export default class Bill{
     get totalTaxes(){ return this.#totalTaxes; }
 
     get totalVoucher(){ return this.#totalVoucher; }
+
+    get others(){ return this.#others }
+
+    get othersType(){ return this.#othersType }
 
     get lines(){ return this.#lines; }
 
@@ -132,7 +140,7 @@ export default class Bill{
 
     set totalSavedMerch(amount){ this.#totalSavedMerch = amount; }
 
-    set totalExcemptMerch(amount){ this.#totalExcemptMerch = amount; }
+    set totalExcemptedMerch(amount){ this.#totalExcemptedMerch = amount; }
     
     set totalSaved(amount){ this.#totalSaved = amount; }
 
@@ -147,6 +155,11 @@ export default class Bill{
     set totalTaxes(amount){ this.#totalTaxes = amount; }
 
     set totalVoucher(amount){ this.#totalVoucher = amount; }
+
+    set others(others){ this.#others = others}
+
+    set othersType(othersType){ this.#othersType = othersType}
+
 
     addLine(name, code, meassure, quantity, price, discount, discDescription, total, subtotal, lineTotal){
         var line = new ProductLine(name, code, meassure, quantity, price, discount, discDescription, total, subtotal, lineTotal);
@@ -177,6 +190,71 @@ export default class Bill{
 
     removeOtherCharge(index){
         this.#otherCharges.splice(index, 1);
+    }
+
+    formatLines(){
+        const thisInstance = this;
+        
+    }
+
+    format(){
+        var linesJSON = {};
+        var billJSON = {
+            clave: this.#key,
+            consecutivo: this.#consecutive,
+            fecha_emision: this.#issueDate,
+            emisor_nombre: this.#emitter.name,
+            emisor_tipo_identif: this.#emitter.IDType,
+            emisor_num_identif: this.#emitter.ID,
+            nombre_comercial: this.#emitter.businessName,
+            emisor_provincia: this.#emitter.province,
+            emisor_canton: this.#emitter.canton,
+            emisor_distrito: this.#emitter.district,
+            emisor_barrio: this.#emitter.neighborhood,
+            emisor_otras_senas: this.#emitter.addressDescription,
+            emisor_cod_pais: this.#emitter.countryCode,
+            emisor_tel: this.#emitter.telefone,
+            emisor_cod_pais_fax: this.#emitter.countryCodeFax,
+            emisor_fax: this.#emitter.fax,
+            emisor_email: this.#emitter.email,  
+            receptor_nombre: this.#emitter.name,
+            receptor_tipo_identif: this.#emitter.IDType,
+            receptor_num_identif: this.#emitter.ID,
+            receptor_provincia: this.#emitter.province,
+            receptor_canton: this.#emitter.canton,
+            receptor_distrito: this.#emitter.district,
+            receptor_barrio: this.#emitter.neighborhood,
+            receptor_cod_pais: this.#emitter.countryCode,
+            receptor_tel: this.#emitter.telefone,
+            receptor_cod_pais_fax: this.#emitter.countryCodeFax,
+            receptor_fax: this.#emitter.fax,
+            receptor_email: this.#emitter.email,
+            condicion_venta: this.#sellCondition,
+            plazo_credito: this.#creditTerm,
+            medio_pago: this.payMethod,
+            cod_moneda: this.#currencyCode,
+            tipo_cambio: this.#exchangeRate,
+            total_serv_gravados: this.#totalSavedServices,
+            total_serv_exentos: this.#totalExcemptServices,
+            total_merc_gravada: this.#totalSavedMerch,
+            total_merc_exenta: this.#totalExcemptedMerch,
+            total_gravados: this.#totalSaved,
+            total_exentos: this.#totalExcempted,
+            total_ventas: this.#totalSold,
+            total_descuentos: this.#totalDiscount,
+            total_ventas_neta: this.#totalNetSold,
+            total_impuestos: this.#totalTaxes,
+            total_comprobante: this.#totalVoucher,
+            otros: this.#others,
+            otrosType: this.othersType,
+            detalles: undefined
+        };
+
+        for (var i = 1; i <= this.#lines.length; i++){
+            linesJSON[i.toString()] = this.#lines[i - 1].format();
+        }
+
+        billJSON.detalles = linesJSON;
     }
 
 }
@@ -214,17 +292,17 @@ class ReferenceDocument{
 
     //Setter
 
-    set doc(){this.#doc = doc; }
+    set doc(doc){this.#doc = doc; }
 
-    set docType(){this.#docType = docType; }
+    set docType(docType){this.#docType = docType; }
 
-    set docNumber(){this.#docNumber = docNumber; }
+    set docNumber(docNumber){this.#docNumber = docNumber; }
 
-    set issueDate(){this.#issueDate = issueDate; }
+    set issueDate(issueDate){this.#issueDate = issueDate; }
 
-    set referenceCode(){this.#referenceCode = referenceCode; }
+    set referenceCode(referenceCode){this.#referenceCode = referenceCode; }
 
-    set description(){this.#description = description; }
+    set description(description){this.#description = description; }
 
 }
 
