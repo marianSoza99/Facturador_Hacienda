@@ -19,7 +19,7 @@
 /*            CONS             */
 /*******************************/
 
-// import FormData from 'form-data';
+import FormData from 'form-data';
 import { URLSearchParams } from 'url';
 import fetch from 'node-fetch'
 import e from 'express';
@@ -86,7 +86,7 @@ function API_checkLogin(success, error, timeout){
 function callPost(req, userData, success, error){     
     API_postRequest(req, userData, 
         function(data){
-            if(data.resp == "1"){
+            if(data.resp != null){
                 if(success != null){
                     success(data);
                 }
@@ -208,7 +208,7 @@ export function APICheckXML(userData, success, error){
 /*********************************************/
 
 function API_postRequest(req, userData,success, error) {
-    var data = new URLSearchParams();
+    var data = new FormData();
     for (var key in req) {
         var value = req[key];
         data.append(key, value);

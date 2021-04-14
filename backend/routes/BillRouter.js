@@ -1,8 +1,7 @@
-/*const router = require('express').Router();
-const cabysAdapter = require('../Model/CABySAdapter');*/
-
 import express from 'express';
 const router = express.Router();
+import multer from 'multer';
+
 import {    getCategory1, getCategory2, getCategory3, 
             getCategory4, getCategory5, getCategory6, 
             getCategory7, getCategory8 } from '../Model/CABySAdapter.js'
@@ -12,8 +11,7 @@ import Bill from '../Model/Bill.js';
 import Emitter from '../Model/Emitter.js';
 import Receiver from '../Model/Receiver.js';
 import Calculator from '../Model/Calculator.js';
-import { APIUploadCertificate, APIGetConsecutive, APIGetToken } from '../Model/HaciendaAPIAdapter.js';
-
+import { APILogin, APIUploadCertificate, APIGetConsecutive, APIGetToken } from '../Model/HaciendaAPIAdapter.js';
 router.route('/cat/:category/:code').get((req, res) => {
     var resp = []
     switch(req.params.category){
@@ -54,6 +52,117 @@ router.route('/getToken').post((req, res) => {
     );
 });
 
+router.route('/generateXML').post((req, res) => {
+
+    var sysDate = new Date();
+
+    var offset = sysDate.getTimezoneOffset();
+
+    var offsetHours = Math.floor(offset / 60) ;
+    var offsetMinutes = offset % 60;
+
+    var date;
+
+    if ((offsetHours * -1) > 0) {
+        date = sysDate.getFullYear() +
+        '-' + String("0" + sysDate.getMonth() + 1).slice(-2) +
+        '-' + String("0" + sysDate.getDate()).slice(-2) +
+        'T' + String("0" + sysDate.getHours()).slice(-2) +
+        ':' + String("0" + sysDate.getMinutes()).slice(-2) +
+        ':' + String("0" + sysDate.getSeconds()).slice(-2) +
+        '+' + String("0" + offsetHours).slice(-2) + ':' +  String("0" + offsetMinutes).slice(-2);
+    }
+    else{
+        date = sysDate.getFullYear() +
+        '-' + String("0" + sysDate.getMonth() + 1).slice(-2) +
+        '-' + String("0" + sysDate.getDate()).slice(-2) +
+        'T' + String("0" + sysDate.getHours()).slice(-2) +
+        ':' + String("0" + sysDate.getMinutes()).slice(-2) +
+        ':' + String("0" + sysDate.getSeconds()).slice(-2) +
+        '-'+ String("0" + offsetHours).slice(-2) + ':' + String("0" + offsetMinutes).slice(-2);
+    }
+
+    var emitter = new Emitter(
+        req.body.emitterName,
+        req.body.emitterIDType,
+        req.body.emitterID,
+        req.body.emitterProvince,
+        req.body.emitterCanton,
+        req.body.emitterDistrict,
+        req.body.emitterNeighborhood,
+        req.body.emitterCountryCode,
+        req.body.emitterFax,
+        req.body.emitterEmail,
+        req.body.emitterBuisnessName,
+        req.body.emitterAddressDrescription
+    );
+
+    var receiver = new Receiver(
+        req.body.receiverName,
+        req.body.receiverIDType,
+        req.body.receiverID,
+        req.body.receiverProvince,
+        req.body.receiverCanton,
+        req.body.receiverDistrict,
+        req.body.receiverNeighborhood,
+        req.body.receiverCountryCode,
+        req.body.receiverFax,
+        req.body.receiverEmail
+    );
+    
+    var consecutive;
+    var key;
+
+    var request = {
+        tipoCedula: req.body.emitterIDType,
+        codigoPais: req.body.emitterCountryCode,
+        consecutivo: "00000000",
+        situacion: "normal",
+        codigoSefuridad: "05050505",
+        tipoDocumento: "FE",
+        terminal: req.body.terminal,
+        sucursal: req.body.subsidiary
+    }
+
+    APIGetConsecutive(request,
+        function(data){
+            consecutive = data.resp.consectivo,
+            key = data.resp.clave
+        }, 
+        (data) => {
+            res.status(400).json(data);
+        }
+    );
+
+    var bill = new Bill(
+        key,
+        consecutive,
+        emitter,
+        receiver,
+        req.body.sellCondition,
+        req.body.creditTerm,
+        req.body.payMethod,
+        req.body.currencyCode,
+        req.body.exchangeRate,
+        req.body.lines,
+        req.body.refDocs,
+        req.body.charges
+    );
+
+    bill.issueDate = date;
+
+    var calculator = new Calculator();
+    calculator.calculateAll(bill);
+
+    generateXML(bill, (data) => {
+        data["key"] = key;
+        data["date"] = date;
+        res.send(data);
+    }, (data) => {
+        res.status(400).json(data);
+    });
+});
+
 router.route('/signXML').post((req, res) => {
     var request = {
         p12Url: req.body.p12,
@@ -72,8 +181,26 @@ router.route('/signXML').post((req, res) => {
 });
 
 router.route('/sendXML').post((req, res) => {
+    var token;
+
     var request = {
-        token: req.body.token,
+        grant_type: "password",
+        client_id: "api-prod",
+        username: "cpf-08-0076-0098@prod.comprobanteselectronicos.go.cr",
+        password: "no*?c*._!U($YSP@T^Yn"
+    };
+
+    APIGetToken(request, 
+        (data) =>{
+            token = data.resp.access_token;
+        },
+        (data) =>{
+            res.status(400).json(data);
+        }
+    );
+
+    var request = {
+        token: token,
         clave: req.body.key,
         fecha: req.body.date,
         emi_tipoIdentificacion: req.body.emitterIDType,
@@ -83,7 +210,23 @@ router.route('/sendXML').post((req, res) => {
         comprobanteXml: req.body.xml,
         client_id: "api-stag"
     };
+    var sendResp;
     sendXML(request, 
+        (data) =>{
+            sendResp = data;
+        },
+        (data) =>{
+            res.status(400).json(data);
+        }
+    );
+
+    var request = {
+        token: token,
+        clave: req.body.key,
+        client_id: "api-stag"
+    };
+
+    checkXML(request, 
         (data) =>{
             res.send(data);
         },
@@ -109,74 +252,63 @@ router.route('/checkXML').post((req, res) => {
     );
 });
 
-
-router.route('/uploadCertificate').post((req, res) => {
-    var request = {
-        sessionKey: req.body.sessionKey,
-        fileToUpload: req.body.file,
-        iam: req.body.username
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+        filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' +file.originalname )
     }
-
-    APIUploadCertificate(request, (data) => {
-        res.send(data);
-    }, (data) => {
-        res.status(400).json(data);
-    })
 });
 
+const upload = multer({ storage: storage }).single('file')
 
-router.route('/generateXML').post((req, res) => {
-    var emitter = new Emitter(
-        req.body.name,
-        req.body.IDType,
-        req.body.ID,
-        req.body.province,
-        req.body.canton,
-        req.body.district,
-        req.body.neighborhood,
-        req.body.countryCode,
-        req.body.fax,
-        req.body.email,
-        req.body.buisnessName,
-        req.body.addressDrescription
-    );
+router.post('/uploadCertificate', (req, res) => {
 
-    var receiver = new Receiver(
-        req.body.name,
-        req.body.IDType,
-        req.body.ID,
-        req.body.province,
-        req.body.canton,
-        req.body.district,
-        req.body.neighborhood,
-        req.body.countryCode,
-        req.body.fax,
-        req.body.email
-    );
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        if (!req.file) {
+            console.log("No file received");
+            return res.send({
+                success: false
+            });
+        } 
+        else {
+
+            console.log(req.file)
+            //userName magnaloracruz
+            //pwd 1234
     
-    var bill = new Bill(
-        req.body.key,
-        req.body.consecutive,
-        req.body.emitter,
-        req.body.receiver,
-        req.body.sellCondition,
-        req.body.creditTerm,
-        req.body.payMethod,
-        req.body.currencyCode,
-        req.body.exchangeRate,
-        req.body.lines,
-        req.body.refDocs,
-        req.body.charges
-    );
+            var requestLogin = {
+                userName: "magnaloracruz",
+                pwd: "1234"
+            }
+            
+            APILogin(requestLogin, 
+                (dataLogin) =>{
+                    var request = {
+                        sessionKey: dataLogin.resp.sessionKey,
+                        fileToUpload: req.file.path,
+                        iam: dataLogin.resp.userName
+                    }
+                
+                    APIUploadCertificate(request, (data) => {
+                        res.send(data);
+                    }, (data) => {
+                        res.status(400).json(data);
+                    })
+                },
+                (data) =>{
+                    res.status(400).json(data);
+                }
+            );
+        }
 
-    var calculator = new Calculator();
-    calculator.calculateAll(bill);
-
-    generateXML(bill, (data) => {
-        res.send(data);
-    }, (data) => {
-        res.status(400).json(data);
-    });
+    })
 });
 
 export default router;

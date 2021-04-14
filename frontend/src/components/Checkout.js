@@ -85,13 +85,12 @@ export default function Checkout() {
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
-
-    axios.get(`http://localhost:5000/bill/cat1/1`)
-      .then(res => {
-        console.log(res);
-        console.log(res.categories);
-      })
-
+    const data = new FormData() ;
+    data.append('file', "C:/Users/Dennis/Desktop/080076009814.p12");
+    axios.post("http://localhost:5000/bill/uploadCertificate", data)
+        .then(res => { // then print response status
+          console.log(res.statusText)
+    })
   };
 
   const handleBack = () => {
