@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import Uploader from './Uploader'
 //import axios from 'axios';
 
 
@@ -160,6 +162,7 @@ function getStepContent(step) {
           <Typography component="h1" variant="h4" align="center">
           Emisión de comprobante electrónico
           </Typography>
+          <Uploader url="http://localhost:5000/bill/uploadCertificate"/>
           <Stepper activeStep={this.state.activePanel} className={classes.stepper} orientation="vertical">
             {steps.map((label) => (
               <Step key={label}>
