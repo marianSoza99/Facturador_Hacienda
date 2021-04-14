@@ -19,8 +19,10 @@
 /*            CONS             */
 /*******************************/
 
-import FormData from 'form-data';
+// import FormData from 'form-data';
+import { URLSearchParams } from 'url';
 import fetch from 'node-fetch'
+import e from 'express';
 
 // Users
 var ERROR_NO_VALID_USER = "-300";
@@ -81,6 +83,48 @@ function API_checkLogin(success, error, timeout){
     });
 }
 
+function callPost(req, userData, success, error){     
+    API_postRequest(req, userData, 
+        function(data){
+            if(data.resp == "1"){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
+function callPostURLEncode(req, userData, success, error){   
+    API_postRequestURLEncode(req, userData, 
+        function(data){
+            if(data.resp == "1"){
+                if(success != null){
+                    success(data);
+                }
+            }else{
+                if(error != null){
+                    error(data);
+                }
+            }
+        },
+        function(data){
+            if(error != null){
+                error(data);
+            }
+        }
+    );
+}
+
 /*********************************************/
 /* Function to create users                   */
 /* Req userData, func success, func error    */
@@ -90,25 +134,7 @@ export function APILogin(userData, success, error){
         w: "users",
         r: "users_log_me_in"
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPost(req,userData,success,error)
 }
 
 export function APIGenerateXML(userData, success, error){
@@ -116,25 +142,7 @@ export function APIGenerateXML(userData, success, error){
         w: "genXML",
         r: "gen_xml_fe",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPost(req,userData,success,error)
 }
 
 export function APIGetConsecutive(userData, success, error){
@@ -142,25 +150,7 @@ export function APIGetConsecutive(userData, success, error){
         w: "clave",
         r: "clave",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPost(req,userData,success,error)
 }
 
 export function APIUploadCertificate(userData, success, error){
@@ -168,25 +158,7 @@ export function APIUploadCertificate(userData, success, error){
         w: "fileUploader",
         r: "subir_certif",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPost(req,userData,success,error)
 }
 
 export function APIGetToken(userData, success, error){
@@ -194,25 +166,7 @@ export function APIGetToken(userData, success, error){
         w: "token",
         r: "gettoken",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPostURLEncode(req,userData,success,error)
 }
 
 export function APIRefreshToken(userData, success, error){
@@ -220,25 +174,7 @@ export function APIRefreshToken(userData, success, error){
         w: "token",
         r: "refresh",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPostURLEncode(req,userData,success,error)
 }
 
 export function APISignXML(userData, success, error){
@@ -246,25 +182,7 @@ export function APISignXML(userData, success, error){
         w: "signXML",
         r: "signFE",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPost(req,userData,success,error)
 }
 
 export function APISendXML(userData, success, error){
@@ -272,26 +190,17 @@ export function APISendXML(userData, success, error){
         w: "send",
         r: "json",
     };
-            
-    API_postRequest(req, userData, 
-        function(data){
-            if(data.resp == 1){
-                if(success != null){
-                    success(data);
-                }
-            }else{
-                if(error != null){
-                    error(data);
-                }
-            }
-        },
-        function(data){
-            if(error != null){
-                error(data);
-            }
-        }
-    );
+    callPost(req,userData,success,error)
 }
+
+export function APICheckXML(userData, success, error){
+    var req = {
+        w: "consultar",
+        r: "consultarCom ",
+    };
+    callPost(req,userData,success,error)
+}
+
 
 /*********************************************/
 /* Function to make post reqs                */
@@ -299,14 +208,14 @@ export function APISendXML(userData, success, error){
 /*********************************************/
 
 function API_postRequest(req, userData,success, error) {
-    var data = new FormData();
+    var data = new URLSearchParams();
     for (var key in req) {
         var value = req[key];
         data.append(key, value);
     } 
 
     for (var key in userData) {
-        var value = req[key];
+        var value = userData[key];
         data.append(key, value);
     } 
     
@@ -331,4 +240,42 @@ function API_postRequest(req, userData,success, error) {
             error(data)
         }
     })
-  }
+}
+
+function API_postRequestURLEncode(req, userData,success, error) {
+    var data = new URLSearchParams();
+    for (var key in req) {
+        var value = req[key];
+        data.append(key, value);
+    } 
+
+    for (var key in userData) {
+        var value = userData[key];
+        data.append(key, value);
+    } 
+    
+    var status = 0;
+
+    fetch(API_url,
+    {
+        method: "POST",
+        body: data,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .then(function(res){ 
+        if(res.status == 200){
+            status = 1;
+        }
+        return res.json();
+    })
+    .then(function(data){ 
+        if (status){
+            success(data) 
+        }
+        else{
+            error(data)
+        }
+    })
+}
