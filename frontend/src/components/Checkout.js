@@ -506,9 +506,23 @@ function getStepContent(step) {
                       <Typography variant="h6" gutterBottom>
                         Documentos de referencia
                       </Typography>
-                      <Typography variant="h6" gutterBottom>
-                        Otros
-                      </Typography>
+                      
+                      <Button
+                        variant="contained"
+                        color="primary"                       
+                        >
+                        Cargar archivos
+                      </Button> 
+                      <TextField
+                          required
+                          id="idPIN"
+                          label="PIN"
+                          style={{ margin: 10 }}
+                          fullWidth
+                          margin="normal"
+                          
+                          autoComplete="Descripción"
+                      />
                         <Button
                         variant="contained"
                         color="primary"
