@@ -90,8 +90,25 @@ function getStepContent(step) {
     super(props);
     this.state = {
       steps: ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Documentos de referencia y otros'],
-      activePanel: 0,
+      activePanel: 0
     }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]:event.target.value});
+  }
+
+  handleComboBoxChange(event, value) {
+    this.setState({[event]:value});
+    console.log(event, value);
+  }
+
+  handleSubmit(event) {
+    alert('Factura generada');
+    event.preventDefault();
   }
 
   swapFormActive = param => {
@@ -156,17 +173,33 @@ function getStepContent(step) {
                     <Grid container spacing={5}>
                       <Grid item xs={12} sm={6}>
                         <Autocomplete
-                        id="businesstype_combobox"
+                        name="businesstype_combobox"
                         options={act_e}
-                          getOptionLabel={(option) => option.label}
-                          style={{ width: 250 }}
-                          renderInput={(params) => <TextField {...params} label="Actividad Económica" variant="outlined" />}
+                        value = {this.state.businesstype_Value}
+                        inputValue = {this.state.businesstype_inputValue}
+                        onChange={( _, newValue) => {    
+                          this.handleComboBoxChange("businesstype_Value", newValue);
+                        }}
+                        onInputChange={( _, newInputValue) => {    
+                          this.handleComboBoxChange("businesstype_inputValue", newInputValue);
+                        }}
+                        getOptionLabel={(option) => option.label}
+                        style={{ width: 250 }}
+                        renderInput={(params) => <TextField {...params} label="Actividad Económica" variant="outlined" />}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Autocomplete
                           id="business_combobox"
                           options={sucursales}
+                          value = {this.state.business_combobox_Value}
+                          inputValue = {this.state.business_combobox_inputValue}
+                          onChange={( _, newValue) => {    
+                            this.handleComboBoxChange("business_combobox_Value", newValue);
+                          }}
+                          onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("business_combobox_inputValue", newInputValue);
+                          }}
                             getOptionLabel={(option) => option.label}
                             style={{ width: 250 }}
                             renderInput={(params) => <TextField {...params} label="Sucursal" variant="outlined" />}
@@ -175,6 +208,8 @@ function getStepContent(step) {
                       <Grid item xs={12} sm={6}>
                         <TextField
                           required
+                          value = {this.state.id_sucursal}
+                          onChange = {this.handleChange}
                           id="id_sucursal"
                           name="id_sucursal"
                           label="Número de sucursal"
@@ -184,20 +219,31 @@ function getStepContent(step) {
                       <Grid item xs={12} sm={6}>
                         <TextField
                           required
+                          value = {this.state.id_caja}
                           id="id_caja"
                           name="id_caja"
                           label="Número de caja"
                           fullWidth
+                          onInputChange = {this.handleChange}
+
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                           <Autocomplete
                           id="document_combobox"
+                          
                           options={doc_options}
                             getOptionLabel={(option) => option.label}
                             style={{ width: 400 }}
                             renderInput={(params) => <TextField {...params} label="Tipo de documento" variant="outlined" />}
-                            
+                            value = {this.state.document_combobox_Value}
+                            inputValue = {this.state.document_combobox_inputValue}
+                            onChange={( _, newValue) => {    
+                              this.handleComboBoxChange("document_combobox_Value", newValue);
+                            }}
+                            onInputChange={( _, newInputValue) => {    
+                              this.handleComboBoxChange("document_combobox_inputValue", newInputValue);
+                            }}
                           />
                       </Grid> 
                     </Grid>
@@ -219,8 +265,16 @@ function getStepContent(step) {
                       <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
                           <Autocomplete
-                          id="idtype_combobox"
+                          id="idEmisor_combobox"
                           options={act_emisor}
+                          value = {this.state.idEmisor_combobox_Value}
+                          inputValue = {this.state.idEmisor_combobox_inputValue}
+                          onChange={( _, newValue) => {    
+                            this.handleComboBoxChange("idEmisor_combobox_Value", newValue);
+                          }}
+                          onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("idEmisor_combobox_inputValue", newInputValue);
+                          }}
                             getOptionLabel={(option) => option.label}
                             style={{ width: 250 }}
                             renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
@@ -229,30 +283,33 @@ function getStepContent(step) {
                         <Grid item xs={12} md={6}>
                           <TextField
                             required
+                            value = {this.state.idnumber}
                             id="idnumber"
                             label="Número de identificación"
+                            onChange = {this.handleChange}
                             fullWidth
                             autoComplete="Número de identificación"
                           />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" />
+                          <TextField required id="name_emisor" label="Nombre" fullWidth autoComplete="name" value = {this.state.name_emisor} onChange = {this.handleChange} />
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <TextField
                             required
+                            value = {this.state.email_receptor}
+                            onChange = {this.handleChange}
                             id="email_receptor"
                             label="Correo electrónico"
-                            //helperText="Last three digits on signature strip"
                             fullWidth
                             autoComplete="correo"
                           />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField required id="phone_receptor" label="Teléfono" fullWidth autoComplete="Teléfono" />
+                          <TextField required id="phone_receptor" label="Teléfono" fullWidth autoComplete="Teléfono" value = {this.state.phone_receptor} onChange = {this.handleChange} />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField required id="address_receptor" label="Dirección" fullWidth autoComplete="Dirección" />
+                          <TextField required id="address_receptor" label="Dirección" fullWidth autoComplete="Dirección" value = {this.state.address_receptor} onChange = {this.handleChange} />
                         </Grid>
                       </Grid>
                       <Button
@@ -283,14 +340,23 @@ function getStepContent(step) {
                             <Autocomplete
                             id="idtype_combobox"
                               options={act_rec}
+                              inputValue = {this.state.idEmisor_combobox_inputValue}
+                              onChange={( _, newValue) => {    
+                                this.handleComboBoxChange("idEmisor_combobox_Value", newValue);
+                              }}
+                              onInputChange={( _, newInputValue) => {    
+                                this.handleComboBoxChange("idEmisor_combobox_inputValue", newInputValue);
+                              }}
                               getOptionLabel={(option) => option.label}
-                                style={{ width: 250 }}
-                                renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
+                              style={{ width: 250 }}
+                              renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
                             />
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <TextField
                               required
+                              value = {this.state.idnumber}
+                              onChange = {this.handleChange}
                               id="idnumber"
                               label="Número de identificación"
                               fullWidth
@@ -298,14 +364,16 @@ function getStepContent(step) {
                             />
                           </Grid>
                           <Grid item xs={12} md={6}>
-                            <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" />
+                            <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" value = {this.state.name_receptor}
+                              onChange = {this.handleChange} />
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <TextField
                               required
                               id="email_receptor"
                               label="Correo electrónico"
-                              //helperText="Last three digits on signature strip"
+                              value = {this.state.idnumber}
+                              onChange = {this.handleChange} 
                               fullWidth
                               autoComplete="correo"
                             />
@@ -337,7 +405,15 @@ function getStepContent(step) {
                       <Grid container spacing={5}>
                         <Grid item xs={12} sm={6}>
                           <Autocomplete
-                          id="businesstype_combobox"
+                          id="paymethodType_combobox"
+                          value = {this.state.paymethodType_combobox_Value}
+                          inputValue = {this.state.paymethodType_combobox_inputValue}
+                          onChange={( _, newValue) => {    
+                            this.handleComboBoxChange("paymethodType_combobox_Value", newValue);
+                          }}
+                          onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("paymethodType_combobox_inputValue", newInputValue);
+                          }}
                            options={act_paymentType}
                             getOptionLabel={(option) => option.label}
                              style={{ width: 250 }}
@@ -346,7 +422,15 @@ function getStepContent(step) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <Autocomplete
-                            id="business_combobox"
+                            id="currencyType_combobox"
+                            value = {this.state.currencyType_combobox_Value}
+                            inputValue = {this.state.currencyType_combobox_inputValue}
+                            onChange={( _, newValue) => {    
+                              this.handleComboBoxChange("currencyType_combobox_Value", newValue);
+                            }}
+                            onInputChange={( _, newInputValue) => {    
+                              this.handleComboBoxChange("currencyType_combobox_inputValue", newInputValue);
+                            }}
                             options={currency}
                               getOptionLabel={(option) => option.label}
                               style={{ width: 250 }}
@@ -355,7 +439,9 @@ function getStepContent(step) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <TextField
-                            id="id_credit"
+                            id="id_credit_time"
+                            value = {this.state.id_credit_time}
+                            onChange = {this.handleChange}
                             name="id_credit"
                             label="Plazo de crédito"
                             fullWidth
@@ -364,6 +450,8 @@ function getStepContent(step) {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             required
+                            value = {this.state.id_exchangeType}
+                            onChange = {this.handleChange}
                             id="id_exchangeType"
                             name="id_exchangeType"
                             label="Tipo de cambio"
@@ -372,7 +460,8 @@ function getStepContent(step) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <TextField
-                            
+                            value = {this.state.id_saleCondition}
+                            onChange = {this.handleChange}
                             id="id_saleCondition"
                             name="id_saleCondition"
                             label="Detalle de condición de venta"
@@ -382,6 +471,8 @@ function getStepContent(step) {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             required
+                            value = {this.state.id_saleCondition}
+                            onChange = {this.handleChange}
                             id="id_exchangeTypeDetail"
                             name="id_exchangeTypeDetail"
                             label="Detalle de forma de cambio"
@@ -392,6 +483,14 @@ function getStepContent(step) {
                         <Grid item xs={12} sm={6}>
                             <Autocomplete
                             id="payMethod"
+                            value = {this.state.payMethod_combobox_Value}
+                            inputValue = {this.state.payMethod_combobox_inputValue}
+                            onChange={( _, newValue) => {    
+                              this.handleComboBoxChange("payMethod_combobox_Value", newValue);
+                            }}
+                            onInputChange={( _, newInputValue) => {    
+                              this.handleComboBoxChange("payMethod_combobox_inputValue", newInputValue);
+                            }}
                             options={paymentMethod}
                               getOptionLabel={(option) => option.label}
                               style={{ width: 400 }}
