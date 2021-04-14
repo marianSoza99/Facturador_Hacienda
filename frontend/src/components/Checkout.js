@@ -90,7 +90,16 @@ function getStepContent(step) {
     super(props);
     this.state = {
       steps: ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Documentos de referencia y otros'],
-      activePanel: 0
+      activePanel: 0,
+      products : [],
+      product: {
+        id:  '',
+        description: '',
+        unit: '',
+        quantity: '',
+        price: '',
+
+      }
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -101,6 +110,15 @@ function getStepContent(step) {
     this.setState({[event.target.name]:event.target.value});
   }
 
+  handleNewProduct = name => ({target:{value}}) => {
+    this.setState({
+      product: {
+        ...this.state.product,
+        [name] : value
+      }
+    })
+  }
+
   handleComboBoxChange(event, value) {
     this.setState({[event]:value});
     console.log(event, value);
@@ -109,6 +127,28 @@ function getStepContent(step) {
   handleSubmit(event) {
     alert('Factura generada');
     event.preventDefault();
+  }
+
+  handleNewLine = () => {
+    const {product, products} = this.state;
+    //this.props.onCreate(product);
+    this.setState({
+      products:[
+        ...products,
+        product
+      ]
+    }) 
+
+    this.setState({
+      product: {
+        id:  '',
+        description: '',
+        unit: '',
+        quantity: '',
+        price: '',
+      }
+    })
+
   }
 
   swapFormActive = param => {
@@ -134,7 +174,7 @@ function getStepContent(step) {
 
   render() {
   const classes = this.props.classes;
-  const {steps} = this.state;
+  const {product: {id, description, unit, quantity, price}, steps, products} = this.state;
   const  act_e= [{label:'CULTIVO Y VENTA DE CEREALES'}, {label:'LEGUMBRES Y GRANOS BÁSICOS NO INCLUIDAS EN CANASTA BÁSICA'}, {label:'ELABORACIÓN DE CHOCOLATE'}, {label:'IMPRESIÓN DIGITAL'}];
   const  sucursales= [{label:'Sucursal 1'}, {label:'Sucursal 2'}, {label:'Sucursal 3'}, {label:'Sucursal 4'}];
   const  doc_options= [{label:'Factura Electrónica'}, {label:'Nota de débito Electrónica'}, {label:'Nota de crédito Electrónica'}, {label:'Tiquete Electrónico'}, {label:'Factura Electrónica de compra'}, {label:'Factura Electrónica de compra'}];
@@ -523,8 +563,9 @@ function getStepContent(step) {
                        
                         <TextField
                           required
-                          id="idProduct"
                           label="Código"
+                          value = {id}
+                          onChange = {this.handleNewProduct('id')}
                           style={{ margin: 8 }}
                           margin="normal"
                           fullWidth
@@ -532,8 +573,9 @@ function getStepContent(step) {
                         />
                         <TextField
                           required
-                          id="descriptionProduct"
                           label="Descripción"
+                          value = {description}
+                          onChange = {this.handleNewProduct('description')}
                           style={{ margin: 10 }}
                           fullWidth
                           margin="normal"
@@ -542,6 +584,12 @@ function getStepContent(step) {
                       <Autocomplete
                         required
                         id="idtype_combobox"
+                        value = {unit}
+                        inputValue = {this.state.idtype_combobox_inputValue}
+                        onChange = {this.handleNewProduct('unit')}
+                        onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("idtype_combobox_inputValue", newInputValue);
+                        }}
                         options={unitOfMeasure}
                         getOptionLabel={(option) => option.label}
                         style={{ width: 400 }}
@@ -550,8 +598,9 @@ function getStepContent(step) {
 
                         <TextField
                           required
-                          id="quantProduct"
                           label="Cantidad"
+                          value = {quantity}
+                          onChange = {this.handleNewProduct('quantity')}
                           style={{ margin: 10 }}
                           fullWidth
                           margin="normal"
@@ -562,6 +611,8 @@ function getStepContent(step) {
                           required
                           id="priceProduct"
                           label="Precio Unitario"
+                          value = {price}
+                          onChange = {this.handleNewProduct('price')}
                           style={{ margin: 10 }}
                           fullWidth
                           margin="normal"
@@ -572,19 +623,20 @@ function getStepContent(step) {
                         variant="contained"
                         color="primary"
                         className={classes.button}
+                        onClick = {this.handleNewLine}
                         >
                         Agregar línea
                       </Button> 
                      </Grid>
                      <Grid item xs={6}>
                        
-                       <Autocomplete
-                        id="idtype_combobox"
-                        options={act_e}
-                          getOptionLabel={(option) => option.label}
-                          style={{ width: 400 }}
-                          renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
-                          />
+                       <Paper className = {this.paper}>
+                        {products.map((product) =>
+                          <Typography>
+                          {product.description}
+                          </Typography>  
+                        )}
+                       </Paper>
                          
                      </Grid>
                      <Button
