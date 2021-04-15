@@ -1,7 +1,8 @@
 import express from 'express';
 const router = express.Router();
 import multer from 'multer';
-import File from 'fs';
+import fetch from 'node-fetch'
+import path from 'path'
 
 import {    getCategory1, getCategory2, getCategory3, 
             getCategory4, getCategory5, getCategory6, 
@@ -271,6 +272,28 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('file')
 
+function blobToFile(theBlob, fileName){
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
+}
+
+router.get('/getFile/:file',function(req,res){
+    var options = {
+        root: path.join(process.env.__dirname+"\\uploads")
+    };
+      
+    var fileName = req.params.file;
+    res.sendFile(fileName, options, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            console.log('Sent:', fileName);
+        }
+    });
+});
+
 router.post('/uploadCertificate', (req, res) => {
 
     upload(req, res, function (err) {
@@ -294,28 +317,38 @@ router.post('/uploadCertificate', (req, res) => {
                 pwd: "1234"
             }
 
-            var file = new File( req.file.path, {
-                type: req.file.mimetype,
-            });
-
-            APILogin(requestLogin, 
-                (dataLogin) =>{
-                    var request = {
-                        sessionKey: dataLogin.resp.sessionKey,
-                        fileToUpload: file,
-                        iam: dataLogin.resp.userName
-                    }
-                
-                    APIUploadCertificate(request, (data) => {
-                        res.send(data);
-                    }, (data) => {
-                        res.status(400).json(data);
-                    })
-                },
-                (data) =>{
-                    res.status(400).json(data);
+            var p = `http://localhost:${process.env.PORT}/bill/getFile/${req.file.filename}`
+            
+            fetch(p,
+                {
+                    method: 'GET',
                 }
-            );
+            ).then(r => {
+                return r.blob()
+            })
+            .then((blob)=>{
+
+                let file = blobToFile(blob, req.file.filename);
+
+                APILogin(requestLogin, 
+                    (dataLogin) =>{
+                        var request = {
+                            sessionKey: dataLogin.resp.sessionKey,
+                            fileToUpload: file,
+                            iam: dataLogin.resp.userName
+                        }
+                    
+                        APIUploadCertificate(request, (data) => {
+                            res.send(data);
+                        }, (data) => {
+                            res.status(400).json(data);
+                        })
+                    },
+                    (data) =>{
+                        res.status(400).json(data);
+                    }
+                );
+            });
         }
     })
 });

@@ -22,7 +22,6 @@
 import FormData from 'form-data';
 import { URLSearchParams } from 'url';
 import fetch from 'node-fetch'
-import e from 'express';
 
 // Users
 var ERROR_NO_VALID_USER = "-300";
@@ -158,6 +157,7 @@ export function APIUploadCertificate(userData, success, error){
         w: "fileUploader",
         r: "subir_certif",
     };
+    console.log(userData)
     callPost(req,userData,success,error)
 }
 
@@ -208,7 +208,7 @@ export function APICheckXML(userData, success, error){
 /*********************************************/
 
 function API_postRequest(req, userData,success, error) {
-    var data = new FormData();
+    var data = new URLSearchParams();
     for (var key in req) {
         var value = req[key];
         data.append(key, value);

@@ -7,9 +7,11 @@ import express from 'express'
 import cors from 'cors'
 
 import 'dotenv/config.js'
+import path from 'path'
 
 const app = express();
 const port = process.env.PORT || 5000;
+process.env.__dirname = (() => {let x = path.dirname(decodeURI(new URL(import.meta.url).pathname)); return path.resolve( (process.platform == "win32") ? x.substr(1) : x ); })();
 
 app.use(cors());
 
