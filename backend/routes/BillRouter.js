@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import multer from 'multer';
+import File from 'fs';
 
 import {    getCategory1, getCategory2, getCategory3, 
             getCategory4, getCategory5, getCategory6, 
@@ -12,6 +13,7 @@ import Emitter from '../Model/Emitter.js';
 import Receiver from '../Model/Receiver.js';
 import Calculator from '../Model/Calculator.js';
 import { APILogin, APIUploadCertificate, APIGetConsecutive, APIGetToken } from '../Model/HaciendaAPIAdapter.js';
+
 router.route('/cat/:category/:code').get((req, res) => {
     var resp = []
     switch(req.params.category){
@@ -258,6 +260,12 @@ const storage = multer.diskStorage({
     },
         filename: function (req, file, cb) {
         cb(null, Date.now() + '-' +file.originalname )
+    },
+        path: function (req, file, cb) {
+        cb(null, file.path )
+    },
+        mimetype: function (req, file, cb) {
+        cb(null, file.mimetype )
     }
 });
 
@@ -278,8 +286,6 @@ router.post('/uploadCertificate', (req, res) => {
             });
         } 
         else {
-
-            console.log(req.file)
             //userName magnaloracruz
             //pwd 1234
     
@@ -287,12 +293,16 @@ router.post('/uploadCertificate', (req, res) => {
                 userName: "magnaloracruz",
                 pwd: "1234"
             }
-            
+
+            var file = new File( req.file.path, {
+                type: req.file.mimetype,
+            });
+
             APILogin(requestLogin, 
                 (dataLogin) =>{
                     var request = {
                         sessionKey: dataLogin.resp.sessionKey,
-                        fileToUpload: req.file.path,
+                        fileToUpload: file,
                         iam: dataLogin.resp.userName
                     }
                 
@@ -307,7 +317,6 @@ router.post('/uploadCertificate', (req, res) => {
                 }
             );
         }
-
     })
 });
 

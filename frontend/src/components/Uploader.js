@@ -41,6 +41,8 @@ var Uploader = function UploaderComponent(props){
       const formData = new FormData();
       formData.append('fileToUpload', selectedFile);
 
+      console.log(selectedFile)
+
       axios.get("http://localhost:5000/per").then(
         (res) => {
           formData.append("w", "fileUploader");
