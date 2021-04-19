@@ -18,9 +18,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import CreateIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -631,9 +628,9 @@ class Bill extends Component {
                           <TableRow>
                             <TableCell>Código</TableCell>
                               <TableCell>Descripción</TableCell>
-                              <TableCell align="right">Unidad</TableCell>
-                              <TableCell align="right">Cantidad</TableCell>
-                              <TableCell align="right">Precio</TableCell>
+                              <TableCell >Unidad</TableCell>
+                              <TableCell >Cantidad</TableCell>
+                              <TableCell >Precio</TableCell>
                             </TableRow>
                           </TableHead>
                         <TableBody>
@@ -642,10 +639,10 @@ class Bill extends Component {
                                 <TableCell component="th" scope="row">
                                         {id}
                                 </TableCell>
-                                <TableCell align="right">{description}</TableCell>
-                                <TableCell align="right">{unit}</TableCell>
-                                <TableCell align="right">{quantity}</TableCell>
-                                <TableCell align="right">{price}</TableCell>
+                                <TableCell >{description}</TableCell>
+                                <TableCell >{unit}</TableCell>
+                                <TableCell >{quantity}</TableCell>
+                                <TableCell >{price}</TableCell>
                                 </TableRow>
                             ))}
                           </TableBody>
