@@ -513,6 +513,7 @@ function getStepContent(step) {
                         >
                         Cargar archivos
                       </Button> 
+                      <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Cargar archivos</button> 
                       <TextField
                           required
                           id="idPIN"
