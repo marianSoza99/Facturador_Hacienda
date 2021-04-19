@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Server side for Facturador_Hacienda app, based on Express framework.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Josue Siles Duran",
+  "license": "ISC",
+  "dependencies": {
+    "blob": "^0.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "file": "^0.2.2",
+    "file-system": "^2.2.2",
+    "form-data": "^4.0.0",
+    "fs": "0.0.1-security",
+    "jquery": "^3.6.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7",
+    "url-search-params": "^1.1.0",
+    "window": "^4.2.7",
+    "xlsx": "^0.16.9"
+  }
+}
