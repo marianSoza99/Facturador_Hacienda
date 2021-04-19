@@ -4,7 +4,12 @@
   "description": "Server side for Facturador_Hacienda app, based on Express framework.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node server.js",
+    "client": "cd client && npm start"
   },
   "author": "Josue Siles Duran",
   "license": "ISC",
@@ -16,5 +21,12 @@
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
     "xlsx": "^0.16.9"
+  },
+  "devDependencies": {
+    "webpack": "^5.33.2"
+  },
+  "engines": {
+    "node": "14.x",
+    "npm": "6.14.6"
   }
 }

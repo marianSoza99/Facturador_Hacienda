@@ -7,20 +7,26 @@ import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import StepContent from '@material-ui/core/StepContent';
 import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+import StepButton from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-//import axios from 'axios';
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     color: '#784af4',
   },
+
   appBar: {
     position: 'relative',
     background: 'linear-gradient(45deg, #283593 90%, #1de9b6 30%)',
@@ -35,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 900,
+      width: 1200,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -61,31 +67,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
-}));
-/*
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <HeaderForm />;
-    case 1:
-      return <EmisorForm />;
-    case 2:
-      return <PaymentForm />;
-    case 3:
-      return <BillForm />;
-    case 4:
-      return <DetalleFacturaForm />;
-
-    case 5:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
+  hover: {
+    borderRadius: "5px",
+    cursor:"pointer",
+    transitionDuration: "0.3s",
+    '&:hover': {
+      background: "#e8eaf6",
+      padding: theme.spacing(0.5,0,0.5),
+      transitionDuration: "0.3s",
+    },
+    
   }
-}
-*/
+}));
 
- class Bill extends Component {
-
+class Bill extends Component {
+  
   constructor(props){
     super(props);
     this.state = {
@@ -151,7 +147,7 @@ function getStepContent(step) {
 
   }
 
-  swapFormActive = param => {
+  swapFormActive = (param) => () => {
     this.setState({
       activePanel: param
     });
@@ -170,8 +166,6 @@ function getStepContent(step) {
       activePanel: activePanel - 1
     });
   };
-
-
   render() {
   const classes = this.props.classes;
   const {product: {id, description, unit, quantity, price}, steps, products} = this.state;
@@ -200,10 +194,10 @@ function getStepContent(step) {
           <Typography component="h1" variant="h4" align="center">
           Emisión de comprobante electrónico
           </Typography>
-          <Stepper activeStep={this.state.activePanel} className={classes.stepper} orientation="vertical">
-            {steps.map((label) => (
+          <Stepper activeStep={this.state.activePanel} nonLinear className={classes.stepper} orientation="vertical">
+            {steps.map((label, index) => (
               <Step key={label}>
-                <StepLabel className = {classes.root}>{label}</StepLabel>
+                <StepButton onClick={this.swapFormActive(index)} className={classes.hover} >{label}</StepButton>
                 <StepContent>
                   {this.state.activePanel === 0 && (
                    <React.Fragment>
@@ -224,7 +218,7 @@ function getStepContent(step) {
                           this.handleComboBoxChange("businesstype_inputValue", newInputValue);
                         }}
                         getOptionLabel={(option) => option.label}
-                        style={{ width: 250 }}
+                        style={{ width: 400 }}
                         renderInput={(params) => <TextField {...params} label="Actividad Económica" variant="outlined" />}
                         />
                       </Grid>
@@ -241,7 +235,7 @@ function getStepContent(step) {
                             this.handleComboBoxChange("business_combobox_inputValue", newInputValue);
                           }}
                             getOptionLabel={(option) => option.label}
-                            style={{ width: 250 }}
+                            style={{ width: 400 }}
                             renderInput={(params) => <TextField {...params} label="Sucursal" variant="outlined" />}
                         />
                       </Grid>
@@ -586,7 +580,9 @@ function getStepContent(step) {
                         id="idtype_combobox"
                         value = {unit}
                         inputValue = {this.state.idtype_combobox_inputValue}
-                        onChange = {this.handleNewProduct('unit')}
+                        onChange={( _, newValue) => {    
+                          this.handleComboBoxChange("document_combobox_Value", newValue);
+                        }}
                         onInputChange={( _, newInputValue) => {    
                             this.handleComboBoxChange("idtype_combobox_inputValue", newInputValue);
                         }}
@@ -629,15 +625,32 @@ function getStepContent(step) {
                       </Button> 
                      </Grid>
                      <Grid item xs={6}>
-                       
                        <Paper className = {this.paper}>
-                        {products.map((product) =>
-                          <Typography>
-                          {product.description}
-                          </Typography>  
-                        )}
-                       </Paper>
-                         
+                       <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Código</TableCell>
+                              <TableCell>Descripción</TableCell>
+                              <TableCell align="right">Unidad</TableCell>
+                              <TableCell align="right">Cantidad</TableCell>
+                              <TableCell align="right">Precio</TableCell>
+                            </TableRow>
+                          </TableHead>
+                        <TableBody>
+                            {products.map(({id, description, unit, quantity, price}) => (
+                              <TableRow key={id}>
+                                <TableCell component="th" scope="row">
+                                        {id}
+                                </TableCell>
+                                <TableCell align="right">{description}</TableCell>
+                                <TableCell align="right">{unit}</TableCell>
+                                <TableCell align="right">{quantity}</TableCell>
+                                <TableCell align="right">{price}</TableCell>
+                                </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                       </Paper> 
                      </Grid>
                      <Button
                         variant="contained"
