@@ -7,20 +7,26 @@ import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import StepContent from '@material-ui/core/StepContent';
 import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+import StepButton from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-//import axios from 'axios';
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     color: '#784af4',
   },
+
   appBar: {
     position: 'relative',
     background: 'linear-gradient(45deg, #283593 90%, #1de9b6 30%)',
@@ -35,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 900,
+      width: 1200,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -61,40 +67,87 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
-}));
-/*
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <HeaderForm />;
-    case 1:
-      return <EmisorForm />;
-    case 2:
-      return <PaymentForm />;
-    case 3:
-      return <BillForm />;
-    case 4:
-      return <DetalleFacturaForm />;
-
-    case 5:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
+  hover: {
+    borderRadius: "5px",
+    cursor:"pointer",
+    transitionDuration: "0.3s",
+    '&:hover': {
+      background: "#e8eaf6",
+      padding: theme.spacing(0.5,0,0.5),
+      transitionDuration: "0.3s",
+    },
+    
   }
-}
-*/
+}));
 
- class Bill extends Component {
-
+class Bill extends Component {
+  
   constructor(props){
     super(props);
     this.state = {
       steps: ['Sucursal','Emisor', 'Receptor', 'Datos Encabezado' , 'Datos Detalle Factura', 'Documentos de referencia y otros'],
       activePanel: 0,
+      products : [],
+      product: {
+        id:  '',
+        description: '',
+        unit: '',
+        quantity: '',
+        price: '',
+
+      }
     }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  swapFormActive = param => {
+  handleChange(event) {
+    this.setState({[event.target.name]:event.target.value});
+  }
+
+  handleNewProduct = name => ({target:{value}}) => {
+    this.setState({
+      product: {
+        ...this.state.product,
+        [name] : value
+      }
+    })
+  }
+
+  handleComboBoxChange(event, value) {
+    this.setState({[event]:value});
+    console.log(event, value);
+  }
+
+  handleSubmit(event) {
+    alert('Factura generada');
+    event.preventDefault();
+  }
+
+  handleNewLine = () => {
+    const {product, products} = this.state;
+    //this.props.onCreate(product);
+    this.setState({
+      products:[
+        ...products,
+        product
+      ]
+    }) 
+
+    this.setState({
+      product: {
+        id:  '',
+        description: '',
+        unit: '',
+        quantity: '',
+        price: '',
+      }
+    })
+
+  }
+
+  swapFormActive = (param) => () => {
     this.setState({
       activePanel: param
     });
@@ -113,17 +166,15 @@ function getStepContent(step) {
       activePanel: activePanel - 1
     });
   };
-
-
   render() {
   const classes = this.props.classes;
-  const {steps} = this.state;
+  const {product: {id, description, unit, quantity, price}, steps, products} = this.state;
   const  act_e= [{label:'CULTIVO Y VENTA DE CEREALES'}, {label:'LEGUMBRES Y GRANOS BÁSICOS NO INCLUIDAS EN CANASTA BÁSICA'}, {label:'ELABORACIÓN DE CHOCOLATE'}, {label:'IMPRESIÓN DIGITAL'}];
   const  sucursales= [{label:'Sucursal 1'}, {label:'Sucursal 2'}, {label:'Sucursal 3'}, {label:'Sucursal 4'}];
   const  doc_options= [{label:'Factura Electrónica'}, {label:'Nota de débito Electrónica'}, {label:'Nota de crédito Electrónica'}, {label:'Tiquete Electrónico'}, {label:'Factura Electrónica de compra'}, {label:'Factura Electrónica de compra'}];
   const  act_emisor= [{label:'Juridica Nacional'}, {label:'Físico Nacional'}, {label:'DIDI'}, {label:'NITE'}, {label:'Pasaporte'}, {label:'DIMEX'}];
   const  act_rec= [{label:'DIMEX'}, {label:'NITE'}, {label:'DIDI'}, {label:'Físico Nacional'}, {label:'Pasaporte'}, {label:'Juridica Nacional'}];
-  const  act_v= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'} , {label:'Otros'}];
+  //const  act_v= [{label:'Código vendedor'}, {label:'Código comprador'}, {label:'Assignado por la industria'}, {label:'Uso interno'} , {label:'Otros'}];
   const  act_paymentType= [{label:'Contado'}, {label:'Crédito'}, {label:'Consignación'}, {label:'Apartado'},  {label:'Arrendamiento con opción de compra'},  {label:'Arrendamiento en función financiera'},  {label:'Servicios prestados al Estado a crédito'}, {label:'Pago de servicios prestados al Estado'}, {label:'Otro'}];
   const  currency= [{label:'CRC-Colón Costarricense'}, {label:'USD-Dolár Americano'}];
   const  paymentMethod= [{label:'Efectivo'}, {label:'Tarjeta'}, {label:'Transferencia - depósito bancario'}, {label:'Recaudado por terceros'}, {label:'Otros'}];
@@ -143,38 +194,56 @@ function getStepContent(step) {
           <Typography component="h1" variant="h4" align="center">
           Emisión de comprobante electrónico
           </Typography>
-          <Stepper activeStep={this.state.activePanel} className={classes.stepper} orientation="vertical">
-            {steps.map((label) => (
+          <Stepper activeStep={this.state.activePanel} nonLinear className={classes.stepper} orientation="vertical">
+            {steps.map((label, index) => (
               <Step key={label}>
-                <StepLabel className = {classes.root}>{label}</StepLabel>
+                <StepButton onClick={this.swapFormActive(index)} className={classes.hover} >{label}</StepButton>
                 <StepContent>
                   {this.state.activePanel === 0 && (
-                  <React.Fragment>
+                   <React.Fragment>
                     <Typography variant="h6" gutterBottom>
                       Información del sucursal
                     </Typography>
                     <Grid container spacing={5}>
                       <Grid item xs={12} sm={6}>
                         <Autocomplete
-                        id="businesstype_combobox"
+                        name="businesstype_combobox"
                         options={act_e}
-                          getOptionLabel={(option) => option.label}
-                          style={{ width: 250 }}
-                          renderInput={(params) => <TextField {...params} label="Actividad Económica" variant="outlined" />}
+                        value = {this.state.businesstype_Value}
+                        inputValue = {this.state.businesstype_inputValue}
+                        onChange={( _, newValue) => {    
+                          this.handleComboBoxChange("businesstype_Value", newValue);
+                        }}
+                        onInputChange={( _, newInputValue) => {    
+                          this.handleComboBoxChange("businesstype_inputValue", newInputValue);
+                        }}
+                        getOptionLabel={(option) => option.label}
+                        style={{ width: 400 }}
+                        renderInput={(params) => <TextField {...params} label="Actividad Económica" variant="outlined" />}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Autocomplete
                           id="business_combobox"
                           options={sucursales}
+                          value = {this.state.business_combobox_Value}
+                          inputValue = {this.state.business_combobox_inputValue}
+                          onChange={( _, newValue) => {    
+                            this.handleComboBoxChange("business_combobox_Value", newValue);
+                          }}
+                          onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("business_combobox_inputValue", newInputValue);
+                          }}
                             getOptionLabel={(option) => option.label}
-                            style={{ width: 250 }}
+                            style={{ width: 400 }}
                             renderInput={(params) => <TextField {...params} label="Sucursal" variant="outlined" />}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <TextField
                           required
+                          value = {this.state.id_sucursal}
+                          onChange = {this.handleChange}
                           id="id_sucursal"
                           name="id_sucursal"
                           label="Número de sucursal"
@@ -184,20 +253,31 @@ function getStepContent(step) {
                       <Grid item xs={12} sm={6}>
                         <TextField
                           required
+                          value = {this.state.id_caja}
                           id="id_caja"
                           name="id_caja"
                           label="Número de caja"
                           fullWidth
+                          onChange = {this.handleChange}
+
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                           <Autocomplete
                           id="document_combobox"
+                          
                           options={doc_options}
                             getOptionLabel={(option) => option.label}
                             style={{ width: 400 }}
                             renderInput={(params) => <TextField {...params} label="Tipo de documento" variant="outlined" />}
-                            
+                            value = {this.state.document_combobox_Value}
+                            inputValue = {this.state.document_combobox_inputValue}
+                            onChange={( _, newValue) => {    
+                              this.handleComboBoxChange("document_combobox_Value", newValue);
+                            }}
+                            onInputChange={( _, newInputValue) => {    
+                              this.handleComboBoxChange("document_combobox_inputValue", newInputValue);
+                            }}
                           />
                       </Grid> 
                     </Grid>
@@ -219,8 +299,16 @@ function getStepContent(step) {
                       <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
                           <Autocomplete
-                          id="idtype_combobox"
+                          id="idEmisor_combobox"
                           options={act_emisor}
+                          value = {this.state.idEmisor_combobox_Value}
+                          inputValue = {this.state.idEmisor_combobox_inputValue}
+                          onChange={( _, newValue) => {    
+                            this.handleComboBoxChange("idEmisor_combobox_Value", newValue);
+                          }}
+                          onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("idEmisor_combobox_inputValue", newInputValue);
+                          }}
                             getOptionLabel={(option) => option.label}
                             style={{ width: 250 }}
                             renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
@@ -229,30 +317,32 @@ function getStepContent(step) {
                         <Grid item xs={12} md={6}>
                           <TextField
                             required
-                            id="idnumber"
+                            value = {this.state.idnumber}
+                            name="idnumber"
                             label="Número de identificación"
+                            onChange = {this.handleChange}
                             fullWidth
-                            autoComplete="Número de identificación"
                           />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" />
+                          <TextField required name="name_emisor" label="Nombre" fullWidth autoComplete="name" value = {this.state.name_emisor} onChange = {this.handleChange} />
                         </Grid>
                         <Grid item xs={12} md={6}>
                           <TextField
                             required
-                            id="email_receptor"
+                            value = {this.state.email_emisor}
+                            onChange = {this.handleChange}
+                            name="email_emisor"
                             label="Correo electrónico"
-                            //helperText="Last three digits on signature strip"
                             fullWidth
-                            autoComplete="correo"
+                            autoComplete="email"
                           />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField required id="phone_receptor" label="Teléfono" fullWidth autoComplete="Teléfono" />
+                          <TextField required name="phone_receptor" label="Teléfono" fullWidth autoComplete="phone" value = {this.state.phone_receptor} onChange = {this.handleChange} />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <TextField required id="address_receptor" label="Dirección" fullWidth autoComplete="Dirección" />
+                          <TextField required name="address_receptor" label="Dirección" fullWidth autoComplete="address" value = {this.state.address_receptor} onChange = {this.handleChange} />
                         </Grid>
                       </Grid>
                       <Button
@@ -281,31 +371,43 @@ function getStepContent(step) {
                         <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <Autocomplete
-                            id="idtype_combobox"
+                            id="idReceptor_combobox"
                               options={act_rec}
+                              value = {this.state.idReceptor_combobox_Value}
+                              inputValue = {this.state.idReceptor_combobox_inputValue}
+                              onChange={( _, newValue) => {    
+                                this.handleComboBoxChange("idReceptor_combobox_Value", newValue);
+                              }}
+                              onInputChange={( _, newInputValue) => {    
+                                this.handleComboBoxChange("idReceptor_combobox_inputValue", newInputValue);
+                              }}
                               getOptionLabel={(option) => option.label}
-                                style={{ width: 250 }}
-                                renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
+                              style={{ width: 250 }}
+                              renderInput={(params) => <TextField {...params} label="Tipo de Identificación" variant="outlined" />}
                             />
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <TextField
                               required
-                              id="idnumber"
+                              value = {this.state.idnumber_receptor}
+                              onChange = {this.handleChange}
+                              name="idnumber_receptor"
                               label="Número de identificación"
                               fullWidth
                               autoComplete="Número de identificación"
                             />
                           </Grid>
                           <Grid item xs={12} md={6}>
-                            <TextField required id="name_receptor" label="Nombre" fullWidth autoComplete="name" />
+                            <TextField required name="name_receptor" label="Nombre" fullWidth autoComplete="name" value = {this.state.name_receptor}
+                              onChange = {this.handleChange} />
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <TextField
                               required
-                              id="email_receptor"
+                              name="email_receptor"
                               label="Correo electrónico"
-                              //helperText="Last three digits on signature strip"
+                              value = {this.state.email_receptor}
+                              onChange = {this.handleChange} 
                               fullWidth
                               autoComplete="correo"
                             />
@@ -337,7 +439,15 @@ function getStepContent(step) {
                       <Grid container spacing={5}>
                         <Grid item xs={12} sm={6}>
                           <Autocomplete
-                          id="businesstype_combobox"
+                          id="paymethodType_combobox"
+                          value = {this.state.paymethodType_combobox_Value}
+                          inputValue = {this.state.paymethodType_combobox_inputValue}
+                          onChange={( _, newValue) => {    
+                            this.handleComboBoxChange("paymethodType_combobox_Value", newValue);
+                          }}
+                          onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("paymethodType_combobox_inputValue", newInputValue);
+                          }}
                            options={act_paymentType}
                             getOptionLabel={(option) => option.label}
                              style={{ width: 250 }}
@@ -346,7 +456,15 @@ function getStepContent(step) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <Autocomplete
-                            id="business_combobox"
+                            id="currencyType_combobox"
+                            value = {this.state.currencyType_combobox_Value}
+                            inputValue = {this.state.currencyType_combobox_inputValue}
+                            onChange={( _, newValue) => {    
+                              this.handleComboBoxChange("currencyType_combobox_Value", newValue);
+                            }}
+                            onInputChange={( _, newInputValue) => {    
+                              this.handleComboBoxChange("currencyType_combobox_inputValue", newInputValue);
+                            }}
                             options={currency}
                               getOptionLabel={(option) => option.label}
                               style={{ width: 250 }}
@@ -355,8 +473,9 @@ function getStepContent(step) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <TextField
-                            id="id_credit"
-                            name="id_credit"
+                            value = {this.state.id_credit_time}
+                            onChange = {this.handleChange}
+                            name="id_credit_time"
                             label="Plazo de crédito"
                             fullWidth
                           />
@@ -364,7 +483,8 @@ function getStepContent(step) {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             required
-                            id="id_exchangeType"
+                            value = {this.state.id_exchangeType}
+                            onChange = {this.handleChange}
                             name="id_exchangeType"
                             label="Tipo de cambio"
                             fullWidth
@@ -372,8 +492,8 @@ function getStepContent(step) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <TextField
-                            
-                            id="id_saleCondition"
+                            value = {this.state.id_saleCondition}
+                            onChange = {this.handleChange}
                             name="id_saleCondition"
                             label="Detalle de condición de venta"
                             fullWidth
@@ -382,7 +502,8 @@ function getStepContent(step) {
                         <Grid item xs={12} sm={6}>
                           <TextField
                             required
-                            id="id_exchangeTypeDetail"
+                            value = {this.state.id_exchangeTypeDetail}
+                            onChange = {this.handleChange}
                             name="id_exchangeTypeDetail"
                             label="Detalle de forma de cambio"
                             fullWidth
@@ -391,7 +512,15 @@ function getStepContent(step) {
                         
                         <Grid item xs={12} sm={6}>
                             <Autocomplete
-                            id="payMethod"
+                            name="payMethod"
+                            value = {this.state.payMethod_combobox_Value}
+                            inputValue = {this.state.payMethod_combobox_inputValue}
+                            onChange={( _, newValue) => {    
+                              this.handleComboBoxChange("payMethod_combobox_Value", newValue);
+                            }}
+                            onInputChange={( _, newInputValue) => {    
+                              this.handleComboBoxChange("payMethod_combobox_inputValue", newInputValue);
+                            }}
                             options={paymentMethod}
                               getOptionLabel={(option) => option.label}
                               style={{ width: 400 }}
@@ -426,60 +555,102 @@ function getStepContent(step) {
                      <Grid container spacing={3}>
                      <Grid item xs={6} spacing={3}>
                        
-                       <Autocomplete
-                        id="idtype_combobox"
-                        options={act_v}
-                          getOptionLabel={(option) => option.label}
-                          style={{ width: 400 }}
-                          renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
-                        />
-
                         <TextField
                           required
-                          id="idProduct"
                           label="Código"
+                          value = {id}
+                          onChange = {this.handleNewProduct('id')}
                           style={{ margin: 8 }}
                           margin="normal"
                           fullWidth
-                          autoComplete="Código"
+
                         />
                         <TextField
                           required
-                          id="descriptionProduct"
                           label="Descripción"
+                          value = {description}
+                          onChange = {this.handleNewProduct('description')}
                           style={{ margin: 10 }}
                           fullWidth
                           margin="normal"
-                          
-                          autoComplete="Descripción"
+                      
                         />
                       <Autocomplete
                         required
                         id="idtype_combobox"
+                        value = {unit}
+                        inputValue = {this.state.idtype_combobox_inputValue}
+                        onChange={( _, newValue) => {    
+                          this.handleComboBoxChange("document_combobox_Value", newValue);
+                        }}
+                        onInputChange={( _, newInputValue) => {    
+                            this.handleComboBoxChange("idtype_combobox_inputValue", newInputValue);
+                        }}
                         options={unitOfMeasure}
                         getOptionLabel={(option) => option.label}
                         style={{ width: 400 }}
                         renderInput={(params) => <TextField {...params} label="Unidad de medida" variant="outlined" />}
                       />
 
+                        <TextField
+                          required
+                          label="Cantidad"
+                          value = {quantity}
+                          onChange = {this.handleNewProduct('quantity')}
+                          style={{ margin: 10 }}
+                          fullWidth
+                          margin="normal"
+                      
+                        />      
+
+                        <TextField
+                          required
+                          id="priceProduct"
+                          label="Precio Unitario"
+                          value = {price}
+                          onChange = {this.handleNewProduct('price')}
+                          style={{ margin: 10 }}
+                          fullWidth
+                          margin="normal"
+                      
+                        />
+
                       <Button
                         variant="contained"
                         color="primary"
                         className={classes.button}
+                        onClick = {this.handleNewLine}
                         >
                         Agregar línea
                       </Button> 
                      </Grid>
                      <Grid item xs={6}>
-                       
-                       <Autocomplete
-                        id="idtype_combobox"
-                        options={act_e}
-                          getOptionLabel={(option) => option.label}
-                          style={{ width: 400 }}
-                          renderInput={(params) => <TextField {...params} label="Tipo de código" variant="outlined" />}
-                          />
-                         
+                       <Paper className = {this.paper}>
+                       <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Código</TableCell>
+                              <TableCell>Descripción</TableCell>
+                              <TableCell align="right">Unidad</TableCell>
+                              <TableCell align="right">Cantidad</TableCell>
+                              <TableCell align="right">Precio</TableCell>
+                            </TableRow>
+                          </TableHead>
+                        <TableBody>
+                            {products.map(({id, description, unit, quantity, price}) => (
+                              <TableRow key={id}>
+                                <TableCell component="th" scope="row">
+                                        {id}
+                                </TableCell>
+                                <TableCell align="right">{description}</TableCell>
+                                <TableCell align="right">{unit}</TableCell>
+                                <TableCell align="right">{quantity}</TableCell>
+                                <TableCell align="right">{price}</TableCell>
+                                </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                       </Paper> 
                      </Grid>
                      <Button
                         variant="contained"
